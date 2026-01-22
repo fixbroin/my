@@ -6,24 +6,9 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import AdminSidebar from './AdminSidebar';
-import AdminHeader from './AdminHeader';
+import AdminLayoutContent from './AdminLayoutContent';
 
 type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
-
-function AdminLayoutContent({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <AdminSidebar className="hidden border-r bg-muted/40 md:flex" />
-      <div className="flex flex-col">
-        <AdminHeader />
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-secondary/40">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
-}
 
 function FullScreenLoader() {
     return (
@@ -41,33 +26,40 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [authStatus, setAuthStatus] = useState<AuthStatus>('loading');
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setAuthStatus(user ? 'authenticated' : 'unauthenticated');
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthStatus(currentUser ? 'authenticated' : 'unauthenticated');
     });
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    if (authStatus === 'unauthenticated' && pathname !== '/admin/login') {
-      router.push('/admin/login');
+    if (authStatus === "loading") return;
+
+    if (!user && pathname !== "/admin/login") {
+        router.replace("/admin/login");
+        return;
     }
-    if (authStatus === 'authenticated' && pathname === '/admin/login') {
-      router.push('/admin/dashboard');
+
+    if (user && pathname === "/admin/login") {
+        router.replace("/admin/dashboard");
     }
-  }, [authStatus, pathname, router]);
+  }, [authStatus, pathname, user, router]);
+
 
   if (authStatus === 'loading') {
     return <FullScreenLoader />;
   }
 
-  if (authStatus === 'authenticated') {
+  if (authStatus === 'authenticated' && user) {
     if (pathname === '/admin/login') {
         // Still loading the dashboard, show a loader to prevent flicker
         return <FullScreenLoader />;
     }
-    return <AdminLayoutContent>{children}</AdminLayoutContent>;
+    return <AdminLayoutContent user={user}>{children}</AdminLayoutContent>;
   }
   
   // Unauthenticated

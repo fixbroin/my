@@ -35,12 +35,25 @@ export default function AdminSidebar({ className, onLinkClick }: AdminSidebarPro
     const [settings, setSettings] = useState<GeneralSettings | null>(null);
 
     useEffect(() => {
+        if (pathname === "/admin/login") return;
+
+        let isMounted = true;
         async function fetchSettings() {
-            const data = await getGeneralSettings();
-            setSettings(data);
+            try {
+                const data = await getGeneralSettings();
+                if (isMounted) {
+                  setSettings(data);
+                }
+            } catch (err) {
+                console.error("Failed to load general settings in sidebar:", err);
+            }
         }
         fetchSettings();
-    }, []);
+
+        return () => {
+            isMounted = false;
+        };
+    }, [pathname]);
 
     const handleLinkClick = () => {
         if (onLinkClick) {

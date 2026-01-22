@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { auth } from "@/lib/firebase";
-import { onAuthStateChanged, User, signOut } from "firebase/auth";
+import { User, signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -24,28 +24,28 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getUnreadNotificationsCount, markAllNotificationsAsRead } from "./notifications/actions";
 import { Badge } from "@/components/ui/badge";
 
-export default function AdminHeader() {
+export default function AdminHeader({ user }: { user: User | null }) {
     const [isSheetOpen, setIsSheetOpen] = useState(false);
-    const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
     const { toast } = useToast();
     const [notificationCount, setNotificationCount] = useState(0);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-        });
-        return () => unsubscribe();
-    }, []);
-
-    useEffect(() => {
+        let isMounted = true;
         const fetchNotifications = async () => {
             const count = await getUnreadNotificationsCount();
-            setNotificationCount(count);
+            if (isMounted) {
+                setNotificationCount(count);
+            }
         };
+        
         fetchNotifications();
         const interval = setInterval(fetchNotifications, 5000); // Poll every 5 seconds
-        return () => clearInterval(interval);
+        
+        return () => {
+            isMounted = false;
+            clearInterval(interval);
+        };
     }, []);
 
     const handleLogout = async () => {
@@ -56,7 +56,7 @@ export default function AdminHeader() {
                 title: 'Logged Out',
                 description: 'You have been successfully logged out.',
             });
-            router.push('/admin/login');
+            router.replace('/admin/login');
         } catch (error) {
             console.error('Logout Error:', error);
             toast({
