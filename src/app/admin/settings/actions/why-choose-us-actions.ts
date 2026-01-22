@@ -39,7 +39,7 @@ export async function getWhyChooseUsContent(): Promise<WhyChooseUsContent> {
             };
         } else {
             contentData = {
-                title: 'Why Choose WebDesignBro?',
+                title: 'Why Choose CineElite ADS?',
                 subtitle: 'We are committed to delivering excellence and innovation in every project.',
                 media_url: 'https://placehold.co/600x800.png',
                 media_type: 'image'

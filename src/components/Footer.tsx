@@ -92,7 +92,7 @@ export default function Footer({ settings }: { settings: GeneralSettings | null 
           </div>
         </div>
         <div className="mt-8 border-t pt-6 text-center text-sm text-muted-foreground flex flex-col sm:flex-row justify-between items-center gap-4" style={useVanta ? { color: 'white', textShadow: '0 1px 3px rgba(0,0,0,0.4)' } : {}}>
-          <p>&copy; {new Date().getFullYear()} {settings?.website_name || 'WebDesignBro'}. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {settings?.website_name || 'CineElite ADS'}. All rights reserved.</p>
            <ul className="flex flex-wrap justify-center gap-x-4 gap-y-2">
               {legalLinks.map((link) => (
                 <li key={link.href}>

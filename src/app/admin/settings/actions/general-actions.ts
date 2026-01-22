@@ -27,7 +27,7 @@ export async function getGeneralSettings(): Promise<GeneralSettings> {
             const data = docSnap.data() as GeneralSettings;
             // Ensure all fields exist with defaults
             return {
-                website_name: data.website_name || 'WebDesignBro',
+                website_name: data.website_name || 'CineElite ADS',
                 logo: data.logo || '',
                 favicon: data.favicon || '/favicon.ico',
                 footer_description: data.footer_description || 'Crafting high-performance websites with modern technology.',
@@ -41,7 +41,7 @@ export async function getGeneralSettings(): Promise<GeneralSettings> {
         } else {
             // Default data if the document doesn't exist
             const defaultData: GeneralSettings = {
-                website_name: 'WebDesignBro',
+                website_name: 'CineElite ADS',
                 logo: '',
                 favicon: '/favicon.ico',
                 footer_description: 'Crafting high-performance websites with modern technology.',

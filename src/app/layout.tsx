@@ -25,7 +25,7 @@ import { cn } from '@/lib/utils';
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getGeneralSettings();
   const seoData = await getSeoData('home');
-  const appName = settings?.website_name || 'WebDesignBro';
+  const appName = settings?.website_name || 'CineElite ADS';
   const ogImage = settings?.logo || `${WEBSITE_URL}/android-chrome-192x192.png`; // Use logo for OG image
 
   return {

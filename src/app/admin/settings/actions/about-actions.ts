@@ -31,7 +31,7 @@ export async function getAboutPageContent(): Promise<AboutPageContent | null> {
         } else {
             aboutData = {
                 mission_title: 'Our Mission',
-                mission_description: 'At WebDesignBro, our mission is to empower businesses...',
+                mission_description: 'At CineElite ADS, our mission is to empower businesses...',
                 mission_image: 'https://placehold.co/600x800.png',
                 stack_title: 'Our Tech Stack',
                 stack_description: 'We use a modern, robust tech stack...',

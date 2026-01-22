@@ -1,4 +1,4 @@
-# **App Name**: WebDesignBro
+# **App Name**: CineElite ADS
 
 ## Core Features:
 
