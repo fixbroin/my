@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -12,6 +11,11 @@ export default function AnalyticsTracker() {
   const previousPath = useRef<string | null>(null);
 
   useEffect(() => {
+    // Do not track admin pages
+    if (pathname.startsWith('/admin')) {
+      return;
+    }
+    
     // Wait until the sessionId is available before tracking.
     if (!sessionId) {
       return;

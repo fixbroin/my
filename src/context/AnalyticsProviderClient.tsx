@@ -53,12 +53,13 @@ export default function AnalyticsProviderClient({ children }: { children: ReactN
             const geoData = await response.json();
             const deviceInfo = getDeviceInfo(navigator.userAgent);
             
-            sendData('/api/track', { sessionId: session, geoData, deviceInfo });
+            const geoDataWithUrl = { ...geoData, pathname: window.location.pathname };
+            sendData('/api/track', { sessionId: session, geoData: geoDataWithUrl, deviceInfo });
         } catch (error) {
             console.error("Failed to track visitor:", error);
              // Fallback with less data if geo lookup fails
             const deviceInfo = getDeviceInfo(navigator.userAgent);
-            sendData('/api/track', { sessionId: session, geoData: {ip: 'Error'}, deviceInfo });
+            sendData('/api/track', { sessionId: session, geoData: {ip: 'Error', pathname: window.location.pathname}, deviceInfo });
         }
     }
     
@@ -94,10 +95,6 @@ export default function AnalyticsProviderClient({ children }: { children: ReactN
 
   const pageview = useCallback(
     (pageUrl: string) => {
-      if (typeof window === 'undefined' || window.location.pathname.startsWith('/admin')) {
-        return () => {};
-      }
-
       trackEvent('page_visit', {
         event: 'page_start',
         pageUrl: pageUrl,
