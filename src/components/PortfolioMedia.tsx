@@ -11,8 +11,16 @@ interface PortfolioMediaProps {
   item: PortfolioItem;
 }
 
+function getYouTubeVideoId(url: string): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
 export default function PortfolioMedia({ item }: PortfolioMediaProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const youTubeVideoId = item.mediaType === 'video' && item.mediaUrl ? getYouTubeVideoId(item.mediaUrl) : null;
 
   const handleFullscreen = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -59,26 +67,37 @@ export default function PortfolioMedia({ item }: PortfolioMediaProps) {
   return (
     <div className="relative h-full w-full bg-muted">
        {item.mediaType === 'video' ? (
-        <>
-          <video
-            ref={videoRef}
-            src={item.mediaUrl}
-            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
-          <Button
-            variant="secondary"
-            size="icon"
-            className="absolute bottom-2 right-2 h-8 w-8 opacity-70 transition-opacity group-hover:opacity-100"
-            onClick={handleFullscreen}
-            aria-label="Play video in fullscreen with sound"
-          >
-            <Expand className="h-4 w-4" />
-          </Button>
-        </>
+        youTubeVideoId ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}`}
+            title={item.title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          ></iframe>
+        ) : (
+          <>
+            <video
+              ref={videoRef}
+              src={item.mediaUrl}
+              className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+            <Button
+              variant="secondary"
+              size="icon"
+              className="absolute bottom-2 right-2 h-8 w-8 opacity-70 transition-opacity group-hover:opacity-100"
+              onClick={handleFullscreen}
+              aria-label="Play video in fullscreen with sound"
+            >
+              <Expand className="h-4 w-4" />
+            </Button>
+          </>
+        )
       ) : (
         <Image
           src={item.mediaUrl}

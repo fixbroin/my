@@ -11,8 +11,17 @@ interface HeroMediaProps {
   media: HomePageContent;
 }
 
+function getYouTubeVideoId(url: string): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
 export default function HeroMedia({ media }: HeroMediaProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const youTubeVideoId = media.hero_media_type === 'video' && media.hero_media_url ? getYouTubeVideoId(media.hero_media_url) : null;
+
 
   const handleFullscreen = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -59,26 +68,37 @@ export default function HeroMedia({ media }: HeroMediaProps) {
   return (
     <div className="relative aspect-video w-full rounded-lg object-cover shadow-lg overflow-hidden bg-muted/50">
         {media.hero_media_type === 'video' ? (
-            <>
-                <video
-                    ref={videoRef}
-                    src={media.hero_media_url || "https://placehold.co/800x600.png"}
-                    className="h-full w-full object-contain"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                />
-                <Button
-                    variant="secondary"
-                    size="icon"
-                    className="absolute bottom-2 right-2 h-8 w-8 opacity-70 transition-opacity hover:opacity-100"
-                    onClick={handleFullscreen}
-                    aria-label="Play video in fullscreen with sound"
-                >
-                    <Expand className="h-4 w-4" />
-                </Button>
-            </>
+             youTubeVideoId ? (
+                <iframe
+                    src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}`}
+                    title="Hero Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full object-cover"
+                ></iframe>
+            ) : (
+                <>
+                    <video
+                        ref={videoRef}
+                        src={media.hero_media_url || "https://placehold.co/800x600.png"}
+                        className="h-full w-full object-contain"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                    />
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        className="absolute bottom-2 right-2 h-8 w-8 opacity-70 transition-opacity hover:opacity-100"
+                        onClick={handleFullscreen}
+                        aria-label="Play video in fullscreen with sound"
+                    >
+                        <Expand className="h-4 w-4" />
+                    </Button>
+                </>
+            )
         ) : (
             <Image
                 src={media.hero_media_url || "https://placehold.co/800x600.png"}

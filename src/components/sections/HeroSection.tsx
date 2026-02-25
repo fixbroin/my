@@ -46,7 +46,7 @@ export default async function HeroSection() {
               word.toLowerCase() === 'convert' ? <span key={index} className="text-primary">{word} </span> : <span key={index}>{word} </span>
             ))}
           </ScrollAnimation>
-          <ScrollAnimation as="p" variant="fadeInUp" delay={0.2} className="max-w-xl text-lg text-muted-foreground md:text-xl"
+          <ScrollAnimation as="p" variant="fadeInUp" delay={0.2} className="max-w-xl text-lg md:text-xl"
              style={useVanta ? { color: 'white', textShadow: '0 1px 3px rgba(0,0,0,0.4)' } : {}}
           >
             {seo.paragraph}
