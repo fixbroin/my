@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useTransition } from 'react';
@@ -38,6 +37,13 @@ async function deleteImageFromFirebase(url: string) {
             throw error;
         }
     }
+}
+
+function getYouTubeVideoId(url: string): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
 }
 
 
@@ -84,7 +90,10 @@ export default function ImageUploadInput({ id, value, onChange, className, accep
 
     try {
         if (value) {
-            await deleteImageFromFirebase(value);
+            // Don't delete youtube links
+            if(!getYouTubeVideoId(value)) {
+              await deleteImageFromFirebase(value);
+            }
         }
 
         const fileExtension = file.name.split('.').pop();
@@ -132,6 +141,13 @@ export default function ImageUploadInput({ id, value, onChange, className, accep
   const handleRemoveImage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!value) return;
+    
+    // Don't try to delete youtube URLs from storage
+    if (getYouTubeVideoId(value)) {
+        onChange('');
+        toast({ description: 'Media URL removed.' });
+        return;
+    }
 
     setIsDeleting(true);
     deleteImageFromFirebase(value)
@@ -147,17 +163,38 @@ export default function ImageUploadInput({ id, value, onChange, className, accep
       });
   };
   
-  const isVideo = value?.includes('.mp4') || value?.includes('.webm');
+  const isDirectVideo = value && (value.includes('.mp4') || value.includes('.webm'));
+  const youTubeVideoId = value ? getYouTubeVideoId(value) : null;
+  
+  let mediaPreview: React.ReactNode = null;
+  if (value) {
+    if (youTubeVideoId) {
+      mediaPreview = (
+        <iframe
+            src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}&controls=0`}
+            title="YouTube video preview"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            className="w-full h-full object-contain"
+        ></iframe>
+      );
+    } else if (isDirectVideo) {
+        mediaPreview = (
+            <video src={value} className="w-full h-full object-contain" autoPlay loop muted playsInline />
+        );
+    } else { // Assume it's an image
+        mediaPreview = (
+            <Image src={value} alt="Preview" fill className="object-contain" />
+        );
+    }
+  }
+
 
   return (
     <div className={cn("space-y-4", className)}>
         {value && (
             <div className="relative w-full aspect-video rounded-md overflow-hidden border bg-muted">
-                 {isVideo ? (
-                    <video src={value} className="w-full h-full object-contain" autoPlay loop muted playsInline />
-                 ) : (
-                    <Image src={value} alt="Preview" fill className="object-contain" />
-                 )}
+                 {mediaPreview}
                  <Button 
                     type="button" 
                     variant="destructive" 
