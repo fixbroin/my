@@ -2,10 +2,9 @@
 'use client';
 
 import * as React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { getTestimonials, Testimonial } from '@/app/admin/testimonials/actions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 import VantaBackground from '../VantaBackground';
 import { getVantaSettings } from '@/app/admin/settings/actions/vanta-actions';
 import type { VantaSettings } from '@/types/firestore';
@@ -16,16 +15,18 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel"
 
 
 function StarRating({ rating }: { rating: number }) {
     return (
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
         {[...Array(5)].map((_, i) => (
             <Star
             key={i}
-            className={`h-5 w-5 ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+            className={`h-3.5 w-3.5 ${i < rating ? 'text-orange-400 fill-orange-400' : 'text-slate-300 dark:text-slate-700'}`}
             />
         ))}
         </div>
@@ -33,21 +34,30 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
-    <Card className="flex flex-col justify-between h-full shadow-lg">
-        <CardContent className="flex flex-col items-start gap-4 p-6">
+    <div className="relative group h-full bg-white dark:bg-[#0f1117] border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-8 lg:p-10 flex flex-col transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20">
+        <div className="absolute top-8 right-8 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Quote className="h-12 w-12 text-primary" />
+        </div>
+        
+        <div className="mb-6">
             <StarRating rating={testimonial.rating} />
-            <p className="text-muted-foreground italic">&ldquo;{testimonial.description}&rdquo;</p>
-            <div className="flex items-center gap-4 pt-4 mt-auto">
-                <Avatar>
-                    <AvatarImage src={testimonial.image} alt={testimonial.name} />
-                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                </div>
+        </div>
+
+        <p className="text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed italic mb-8 flex-grow">
+            &ldquo;{testimonial.description}&rdquo;
+        </p>
+
+        <div className="flex items-center gap-4 pt-6 border-t border-slate-100 dark:border-white/5">
+            <Avatar className="h-12 w-12 border-2 border-primary/20">
+                <AvatarImage src={testimonial.image} alt={testimonial.name} />
+                <AvatarFallback className="bg-primary/10 text-primary font-bold">{testimonial.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+                <p className="font-black text-slate-900 dark:text-white tracking-tight">{testimonial.name}</p>
+                <p className="text-[10px] uppercase tracking-widest font-black text-primary">Verified Client</p>
             </div>
-        </CardContent>
-    </Card>
+        </div>
+    </div>
 )
 
 export default function TestimonialSection() {
@@ -55,17 +65,21 @@ export default function TestimonialSection() {
     const [vantaSettings, setVantaSettings] = React.useState<VantaSettings | null>(null);
 
     const plugin = React.useRef(
-        Autoplay({ delay: 2000, stopOnInteraction: true, stopOnMouseEnter: true })
+        Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: false })
     );
 
     React.useEffect(() => {
         async function fetchData() {
-            const [testimonialsData, vantaData] = await Promise.all([
-                getTestimonials(),
-                getVantaSettings()
-            ]);
-            setTestimonials(testimonialsData);
-            setVantaSettings(vantaData);
+            try {
+                const [testimonialsData, vantaData] = await Promise.all([
+                    getTestimonials(),
+                    getVantaSettings()
+                ]);
+                setTestimonials(testimonialsData);
+                setVantaSettings(vantaData);
+            } catch (error) {
+                console.error("Failed to load testimonials:", error);
+            }
         }
         fetchData();
     }, []);
@@ -73,41 +87,53 @@ export default function TestimonialSection() {
     const sectionVantaConfig = vantaSettings?.sections?.testimonials;
     const useVanta = vantaSettings?.globalEnable && sectionVantaConfig?.enabled;
     
-    if (testimonials.length === 0) {
-        return null; // Don't render the section if there are no testimonials
-    }
+    if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className={cn("relative", !useVanta && 'bg-secondary')}>
+    <section id="testimonials" className={cn("relative overflow-hidden py-24", !useVanta && 'bg-slate-50 dark:bg-black/20')}>
        {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
-      <div className="container">
-        <ScrollAnimation as="div" variant="fadeInUp" className="text-center">
-            <h2 className="text-3xl font-bold md:text-4xl" style={useVanta ? { color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' } : {}}>What Our Clients Say</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground" style={useVanta ? { color: 'white', textShadow: '0 1px 3px rgba(0,0,0,0.4)' } : {}}>
-                Real stories from satisfied partners who have achieved success with our services.
+      
+      <div className="container relative z-10">
+        <ScrollAnimation as="div" variant="fadeInUp" className="text-center mb-16">
+            <h2 className={cn(
+                "text-4xl md:text-5xl font-black tracking-tight mb-4",
+                useVanta ? "text-white" : "text-slate-900 dark:text-white"
+            )}>Client Success Stories</h2>
+            <div className="w-20 h-1.5 bg-primary mx-auto rounded-full mb-6" />
+            <p className={cn(
+                "mx-auto max-w-2xl text-lg font-medium",
+                useVanta ? "text-white" : "text-slate-600 dark:text-white"
+            )}>
+                Experience the impact of our digital craftsmanship through the eyes of our partners.
             </p>
         </ScrollAnimation>
-      </div>
-      
-      <div className="mt-12">
-        <Carousel
-            opts={{
-                align: "start",
-                loop: true,
-            }}
-            plugins={[plugin.current]}
-            className="w-full"
-            >
-            <CarouselContent>
-                {testimonials.map((testimonial) => (
-                <CarouselItem key={testimonial.id} className="basis-full md:basis-1/2 lg:basis-1/3">
-                    <div className='p-2 h-full'>
-                        <TestimonialCard testimonial={testimonial} />
+
+        <div className="px-4 relative group/carousel max-w-6xl mx-auto">
+            {testimonials.length > 0 && (
+                <Carousel
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    plugins={[plugin.current]}
+                    className="w-full"
+                >
+                    <CarouselContent className="-ml-4">
+                        {testimonials.map((testimonial) => (
+                        <CarouselItem key={testimonial.id} className="pl-4 basis-full md:basis-1/2 lg:basis-1/2">
+                            <div className='py-4 h-full'>
+                                <TestimonialCard testimonial={testimonial} />
+                            </div>
+                        </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <div className="hidden md:block">
+                        <CarouselPrevious className="absolute -left-12 top-1/2 -translate-y-1/2 opacity-0 group-hover/carousel:opacity-100 transition-opacity" />
+                        <CarouselNext className="absolute -right-12 top-1/2 -translate-y-1/2 opacity-0 group-hover/carousel:opacity-100 transition-opacity" />
                     </div>
-                </CarouselItem>
-                ))}
-            </CarouselContent>
-        </Carousel>
+                </Carousel>
+            )}
+        </div>
       </div>
     </section>
   );

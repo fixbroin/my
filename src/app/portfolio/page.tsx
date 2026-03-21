@@ -1,77 +1,80 @@
 
-import { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowRight } from 'lucide-react';
-import { APP_NAME, WEBSITE_URL } from '@/lib/config';
 import { getPortfolioItems } from '../admin/settings/actions/portfolio-actions';
 import { getSeoData } from '../admin/seo-geo-settings/actions';
 import ScrollAnimation from '@/components/ScrollAnimation';
 import PortfolioMedia from '@/components/PortfolioMedia';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const seoData = await getSeoData('portfolio');
-  return {
-    title: seoData.meta_title,
-    description: seoData.meta_description,
-    keywords: seoData.meta_keywords,
-    alternates: {
-      canonical: `${WEBSITE_URL}/portfolio`,
-    },
-  };
-}
-
+import { Sparkles, Plus } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default async function PortfolioPage() {
   const portfolioItems = await getPortfolioItems();
   const seoData = await getSeoData('portfolio');
 
   const PortfolioCard = ({ item }: { item: typeof portfolioItems[0] }) => (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full">
-      <CardContent className="p-0 flex flex-col flex-grow">
-        <div className="relative h-60 w-full">
+    <div className="group relative flex flex-col h-full bg-white dark:bg-[#0f1117] rounded-[2.5rem] overflow-hidden border border-slate-200 dark:border-white/5 transition-all duration-500 hover:shadow-2xl">
+        <div className="relative h-[320px] w-full overflow-hidden">
           <PortfolioMedia item={item} />
+          
+          <div className="absolute top-6 left-6">
+            <span className="bg-white/90 dark:bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white border border-white/20">
+                {item.category}
+            </span>
+          </div>
         </div>
-        <div className="p-6 flex-grow flex flex-col">
-          <p className="text-sm text-primary font-medium">{item.category}</p>
-          <h3 className="mt-1 font-headline text-2xl font-semibold">{item.title}</h3>
-          {item.link && item.link !== '#' && (
-            <div className="mt-auto pt-4 flex items-center text-sm text-muted-foreground group-hover:text-primary transition-colors">
-              View Project <ArrowRight className="ml-2 h-4 w-4" />
-            </div>
-          )}
+        
+        <div className="p-8 flex flex-col flex-grow">
+          <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
+            {item.title}
+          </h3>
+          <div className="mt-auto pt-6 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+             <div className="flex -space-x-2">
+                {[1,2,3].map(i => (
+                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#0f1117] bg-slate-100 dark:bg-white/5" />
+                ))}
+                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-[#0f1117] bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                    <Plus className="h-3 w-3" />
+                </div>
+             </div>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+    </div>
   );
 
   return (
-    <>
-      <section className="bg-secondary">
-        <ScrollAnimation as="div" variant="fadeInUp" className="container text-center py-12">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">{seoData.h1_title}</h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            {seoData.paragraph}
-          </p>
-        </ScrollAnimation>
-      </section>
-
-      <section className="container">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {portfolioItems.map((item, index) => (
-            <ScrollAnimation as="div" key={item.id || index} variant='fadeInUp' delay={index * 0.1}>
-              {item.link && item.link !== '#' ? (
-                <Link href={item.link} target="_blank" rel="noopener noreferrer" className="h-full block">
-                  <PortfolioCard item={item} />
-                </Link>
-              ) : (
-                <PortfolioCard item={item} />
-              )}
+    <main className="overflow-hidden">
+      {/* Header */}
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 bg-slate-50 dark:bg-black/20 text-center">
+        <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]" />
+        </div>
+        <div className="container relative z-10">
+            <ScrollAnimation variant="fadeInUp">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-6">
+                    <Sparkles className="h-3 w-3" />
+                    <span>Visual Showcase</span>
+                </div>
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 dark:text-white mb-8 leading-none">
+                    {seoData.h1_title}
+                </h1>
+                <p className="mx-auto max-w-2xl text-lg md:text-xl font-medium text-slate-600 dark:text-white leading-relaxed">
+                    {seoData.paragraph}
+                </p>
             </ScrollAnimation>
-          ))}
         </div>
       </section>
-    </>
+
+      {/* Grid */}
+      <section className="py-24 lg:py-32">
+        <div className="container">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-16">
+            {portfolioItems.map((item, index) => (
+                <ScrollAnimation key={item.id || index} variant='fadeInUp' delay={index * 0.1}>
+                    <PortfolioCard item={item} />
+                </ScrollAnimation>
+            ))}
+            </div>
+        </div>
+      </section>
+    </main>
   );
 }

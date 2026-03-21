@@ -8,7 +8,6 @@ import './globals.css';
 import Script from 'next/script';
 import { getGeneralSettings } from './admin/settings/actions/general-actions';
 import { getSeoData } from './admin/seo-geo-settings/actions';
-import { WEBSITE_URL } from '@/lib/config';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { getThemeSettings } from './admin/settings/actions/theme-actions';
 import { DEFAULT_DARK_THEME_COLORS_HSL, DEFAULT_LIGHT_THEME_COLORS_HSL } from '@/lib/colorUtils';
@@ -21,15 +20,31 @@ import { AnalyticsProvider } from '@/context/AnalyticsContext';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
 import { cn } from '@/lib/utils';
 
+export const revalidate = 86400; // Revalidate all pages every 24 hours by default
+
+import JSONLD from '@/components/JSONLD';
+
 // Use generateMetadata for dynamic metadata
 export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '/';
+  const host = headersList.get('host') || 'cineelite.com';
+  const protocol = headersList.get('x-forwarded-proto') || 'https';
+  const fullBaseUrl = `${protocol}://${host}`;
+  
+  // Extract slug from pathname (e.g., /services -> services, / -> home)
+  let pageSlug = pathname.split('/').filter(Boolean)[0] || 'home';
+  if (pathname.startsWith('/admin')) pageSlug = 'home'; // Admin pages use home SEO by default
+
   const settings = await getGeneralSettings();
-  const seoData = await getSeoData('home');
+  const seoData = await getSeoData(pageSlug);
+  
   const appName = settings?.website_name || 'CineElite ADS';
-  const ogImage = settings?.logo || `${WEBSITE_URL}/android-chrome-192x192.png`; // Use logo for OG image
+  const ogImage = seoData?.og_image || settings?.logo || `${fullBaseUrl}/android-chrome-192x192.png`;
+  const canonical = seoData?.canonical_url || `${fullBaseUrl}${pathname === '/' ? '' : pathname}`;
 
   return {
-    metadataBase: new URL(WEBSITE_URL),
+    metadataBase: new URL(fullBaseUrl),
     title: {
       default: seoData.meta_title,
       template: `%s | ${appName}`,
@@ -38,12 +53,12 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: seoData.meta_keywords,
     manifest: '/manifest.json',
     alternates: {
-      canonical: '/',
+      canonical: canonical,
     },
     openGraph: {
       title: seoData.meta_title,
       description: seoData.meta_description,
-      url: WEBSITE_URL,
+      url: canonical,
       siteName: appName,
       images: [
         {
@@ -54,17 +69,6 @@ export async function generateMetadata(): Promise<Metadata> {
       ],
       locale: 'en_US',
       type: 'website',
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
     },
     twitter: {
       card: 'summary_large_image',
@@ -103,6 +107,11 @@ export default async function RootLayout({
   const globalSettings = await getThemeSettings();
   const vantaSettings = await getVantaSettings();
   
+  // Extract slug from pathname (e.g., /services -> services, / -> home)
+  let pageSlug = pathname.split('/').filter(Boolean)[0] || 'home';
+  if (pathname.startsWith('/admin')) pageSlug = 'home';
+  const seoData = await getSeoData(pageSlug);
+
   // Only fetch marketing settings for non-admin pages
   const marketingSettings = isAdminPage ? null : await getMarketingSettings();
 
@@ -118,7 +127,7 @@ export default async function RootLayout({
   };
   
   const cookieStore = await cookies();
-  const theme = cookieStore.get('theme')?.value || 'dark';
+  const theme = cookieStore.get('theme')?.value || 'light';
 
   const cssVariables = `
     :root {
@@ -134,24 +143,26 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
         {vantaSettings.globalEnable && (
            <>
-            <Script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js" strategy="beforeInteractive" />
-            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.trunk.min.js" strategy="beforeInteractive" />
+            <Script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js" strategy="afterInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.trunk.min.js" strategy="afterInteractive" />
            </>
         )}
         <style dangerouslySetInnerHTML={{ __html: cssVariables }} />
+
+        <JSONLD seoData={seoData} settings={settings} pathname={pathname} />
 
         {/* Marketing Scripts Injection */}
         {marketingSettings?.googleTagManagerId?.enabled && marketingSettings.googleTagManagerId.value && (
@@ -209,7 +220,7 @@ export default async function RootLayout({
             <Script id="custom-head-script" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: stripScriptTags(marketingSettings.customHeadScript.value) }} />
         )}
       </head>
-      <body className="font-body antialiased">
+      <body className="font-body antialiased transition-colors duration-300">
         {/* Noscript tags for GTM and Meta Pixel */}
         {marketingSettings?.googleTagManagerId?.enabled && marketingSettings.googleTagManagerId.value && (
           <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${marketingSettings.googleTagManagerId.value}`}
@@ -225,7 +236,7 @@ export default async function RootLayout({
           <AnalyticsProvider>
             <ThemeProvider
               attribute="class"
-              defaultTheme="dark"
+              defaultTheme="light"
               enableSystem={false}
               disableTransitionOnChange
             >

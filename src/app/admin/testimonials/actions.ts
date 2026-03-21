@@ -3,7 +3,8 @@
 
 import { collection, addDoc, getDocs, doc, getDoc, updateDoc, deleteDoc, serverTimestamp, query as firestoreQuery, orderBy, Timestamp } from 'firebase/firestore';
 import { firestore } from '@/lib/firebase';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_cache, revalidateTag } from 'next/cache';
+import { cache } from 'react';
 import * as z from 'zod';
 import { notFound } from 'next/navigation';
 
@@ -31,6 +32,7 @@ export async function addTestimonial(data: TestimonialFormData) {
       ...validated.data,
       createdAt: serverTimestamp(),
     });
+    revalidateTag('testimonials-list');
     revalidatePath('/admin/testimonials');
     revalidatePath('/'); // For home page
     return { success: true };
@@ -40,51 +42,57 @@ export async function addTestimonial(data: TestimonialFormData) {
   }
 }
 
-export async function getTestimonials(): Promise<Testimonial[]> {
-  try {
-    const q = firestoreQuery(collection(firestore, 'testimonials'), orderBy('createdAt', 'desc'));
-    const querySnapshot = await getDocs(q);
+export const getTestimonials = cache(async (): Promise<Testimonial[]> => {
+    return await unstable_cache(
+        async () => {
+            try {
+                const q = firestoreQuery(collection(firestore, 'testimonials'), orderBy('createdAt', 'desc'));
+                const querySnapshot = await getDocs(q);
 
-    if (querySnapshot.empty) {
-        const defaultTestimonial = {
-            name: 'Jane Doe',
-            description: 'This is a fantastic service! Highly recommended to everyone looking for a professional website.',
-            rating: 5,
-            image: '',
-            createdAt: serverTimestamp()
-        };
-        await addDoc(collection(firestore, 'testimonials'), defaultTestimonial);
-        const newSnapshot = await getDocs(q);
-        return newSnapshot.docs.map(doc => {
-            const data = doc.data();
-            const rawDate = data.createdAt;
-            const createdAt = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
-            return {
-                ...doc.data(),
-                id: doc.id,
-                createdAt: createdAt.toISOString(),
-            } as Testimonial;
-        });
-    }
-    
-    return querySnapshot.docs.map(doc => {
-        const data = doc.data();
-        const rawDate = data.createdAt;
-        const createdAt = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
-        return {
-            id: doc.id,
-            name: data.name,
-            description: data.description,
-            rating: Number(data.rating),
-            image: data.image || '',
-            createdAt: createdAt.toISOString(),
-        } as Testimonial;
-    });
-  } catch (error) {
-    console.error('Failed to fetch testimonials:', error);
-    return [];
-  }
-}
+                if (querySnapshot.empty) {
+                    const defaultTestimonial = {
+                        name: 'Jane Doe',
+                        description: 'This is a fantastic service! Highly recommended to everyone looking for a professional website.',
+                        rating: 5,
+                        image: '',
+                        createdAt: serverTimestamp()
+                    };
+                    await addDoc(collection(firestore, 'testimonials'), defaultTestimonial);
+                    const newSnapshot = await getDocs(q);
+                    return newSnapshot.docs.map(doc => {
+                        const data = doc.data();
+                        const rawDate = data.createdAt;
+                        const createdAt = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
+                        return {
+                            ...doc.data(),
+                            id: doc.id,
+                            createdAt: createdAt.toISOString(),
+                        } as Testimonial;
+                    });
+                }
+                
+                return querySnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const rawDate = data.createdAt;
+                    const createdAt = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
+                    return {
+                        id: doc.id,
+                        name: data.name,
+                        description: data.description,
+                        rating: Number(data.rating),
+                        image: data.image || '',
+                        createdAt: createdAt.toISOString(),
+                    } as Testimonial;
+                });
+            } catch (error) {
+                console.error('Failed to fetch testimonials:', error);
+                return [];
+            }
+        },
+        ['testimonials-list'],
+        { tags: ['settings', 'testimonials-list'], revalidate: 86400 }
+    )();
+});
 
 export async function getTestimonial(id: string): Promise<TestimonialFormData | null> {
   try {
@@ -114,6 +122,7 @@ export async function updateTestimonial(id: string, data: TestimonialFormData) {
   try {
     const docRef = doc(firestore, 'testimonials', id);
     await updateDoc(docRef, validated.data);
+    revalidateTag('testimonials-list');
     revalidatePath('/admin/testimonials');
     revalidatePath(`/admin/testimonials/edit/${id}`);
     revalidatePath('/'); // For home page
@@ -127,6 +136,7 @@ export async function updateTestimonial(id: string, data: TestimonialFormData) {
 export async function deleteTestimonial(id: string) {
   try {
     await deleteDoc(doc(firestore, 'testimonials', id));
+    revalidateTag('testimonials-list');
     revalidatePath('/admin/testimonials');
     revalidatePath('/'); // For home page
     return { success: true };

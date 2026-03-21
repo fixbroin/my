@@ -3,92 +3,93 @@
 
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { firestore } from '@/lib/firebase';
-import { revalidatePath } from 'next/cache';
-
-export interface PageSeoContent {
-    h1_title: string;
-    paragraph: string;
-    meta_title: string;
-    meta_description: string;
-    meta_keywords: string;
-}
+import { revalidatePath, unstable_cache, revalidateTag } from 'next/cache';
+import { cache } from 'react';
+import { PageSeoContent, defaultSeoSettings } from '@/types/seo';
 
 const defaultContent: Record<string, PageSeoContent> = {
     home: {
-        h1_title: 'Stunning Websites that Convert',
-        paragraph: 'We design and build fast, responsive, and SEO-optimized websites that help your business grow. Get a custom quote today.',
-        meta_title: 'CineElite ADS - Custom Web Design Services',
-        meta_description: 'High-performance, SEO-optimized, and mobile-friendly websites built with Next.js. We offer custom web design, e-commerce solutions, and more.',
-        meta_keywords: 'web design, next.js developer, bangalore, india, custom websites',
+        ...defaultSeoSettings,
     },
     services: {
-        h1_title: 'What We Offer',
-        paragraph: 'From simple landing pages to complex web applications, we have a solution for you.',
-        meta_title: 'Our Services | CineElite ADS',
-        meta_description: 'We offer a wide range of web design and development services, including business websites, e-commerce stores, and custom dashboards.',
-        meta_keywords: 'web development, e-commerce, custom dashboards, business websites',
+        h1_title: 'Full-Spectrum Video Production Services',
+        paragraph: 'From concept to final cut, we provide comprehensive production services including TVCs, product shoots, and corporate documentaries.',
+        meta_title: 'Our Production Services | CineElite ADS',
+        meta_description: 'Explore our video production services: Ad filmmaking, corporate brand films, social media content, and high-end post-production.',
+        meta_keywords: 'ad filmmaking, corporate videos, product videography, post production services',
+        schema_type: 'ProfessionalService',
     },
     portfolio: {
-        h1_title: 'Our Portfolio',
-        paragraph: 'A glimpse into the quality and creativity we bring to every project.',
-        meta_title: 'Portfolio | CineElite ADS',
-        meta_description: 'Explore our portfolio of successfully launched websites, from e-commerce stores to corporate pages.',
-        meta_keywords: 'portfolio, web design projects, e-commerce examples',
+        h1_title: 'Our Cinematic Masterpieces',
+        paragraph: 'Explore a gallery of our most impactful work, ranging from high-budget TV commercials to viral digital campaigns.',
+        meta_title: 'Production Portfolio | CineElite ADS Showcase',
+        meta_description: 'Watch our latest ad films and commercials. See how we help brands tell their stories through high-end cinematic visuals.',
+        meta_keywords: 'video portfolio, ad showreel, commercial examples, cinematic work',
+        schema_type: 'WebSite',
     },
     pricing: {
-        h1_title: 'Our Pricing',
-        paragraph: 'Transparent and affordable pricing for top-quality web design services.',
-        meta_title: 'Pricing | CineElite ADS',
-        meta_description: 'Find the perfect plan for your web design needs. We offer flexible pricing for businesses of all sizes.',
-        meta_keywords: 'website pricing, web design cost, affordable websites',
+        h1_title: 'Production Packages & Investment',
+        paragraph: 'Transparent pricing for world-class video production. We offer scalable packages tailored to your brand’s marketing goals.',
+        meta_title: 'Video Production Pricing | CineElite ADS',
+        meta_description: 'Find the right production package for your business. Affordable to premium ad film production rates and packages.',
+        meta_keywords: 'video production cost, ad film price, corporate video packages',
+        schema_type: 'WebSite',
     },
     about: {
-        h1_title: 'About CineElite ADS',
-        paragraph: 'We are passionate about building beautiful, functional, and high-performance web experiences.',
-        meta_title: 'About Us | CineElite ADS',
-        meta_description: 'Learn more about CineElite ADS, our mission, and the technologies we use to build amazing websites.',
-        meta_keywords: 'about us, web design company, our mission',
+        h1_title: 'Visionaries Behind the Lens',
+        paragraph: 'CineElite ADS is a collective of storytellers, directors, and artists dedicated to pushing the boundaries of visual advertising.',
+        meta_title: 'About CineElite ADS | Our Story & Vision',
+        meta_description: 'Learn about CineElite ADS, our mission to redefine advertising through cinema, and the team driving our creative success.',
+        meta_keywords: 'about video production company, creative agency team, film directors bangalore',
+        schema_type: 'Organization',
     },
     contact: {
-        h1_title: 'Get in Touch',
-        paragraph: 'We\'re here to help you turn your ideas into reality. Reach out to us for a free consultation.',
-        meta_title: 'Contact Us | CineElite ADS',
-        meta_description: 'Get in touch with CineElite ADS for a free quote or to discuss your project. We are available via email, phone, or WhatsApp.',
-        meta_keywords: 'contact us, free quote, web design consultation',
+        h1_title: 'Pitch Your Next Big Idea',
+        paragraph: 'Ready to create something legendary? Contact our production office today for a consultation or project quote.',
+        meta_title: 'Contact Our Studio | CineElite ADS',
+        meta_description: 'Get in touch with CineElite ADS for your next video production project. Available for global commissions and local shoots.',
+        meta_keywords: 'contact ad agency, hire video production, film studio contact',
+        schema_type: 'LocalBusiness',
     },
 };
 
-export async function getSeoData(pageSlug: string): Promise<PageSeoContent> {
-    try {
-        const docRef = doc(firestore, 'page_seo', pageSlug);
-        const docSnap = await getDoc(docRef);
+export const getSeoData = cache(async (pageSlug: string): Promise<PageSeoContent> => {
+    return await unstable_cache(
+        async () => {
+            try {
+                const docRef = doc(firestore, 'page_seo', pageSlug);
+                const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            return docSnap.data() as PageSeoContent;
-        } else {
-            const initialData = defaultContent[pageSlug] || Object.values(defaultContent)[0];
-            await setDoc(docRef, initialData);
-            return initialData;
-        }
-    } catch (error) {
-        console.error(`Failed to fetch SEO data for ${pageSlug}:`, error);
-        return defaultContent[pageSlug] || Object.values(defaultContent)[0];
-    }
-}
+                if (docSnap.exists()) {
+                    const data = docSnap.data() as PageSeoContent;
+                    return {
+                        ...defaultSeoSettings,
+                        ...data,
+                    };
+                } else {
+                    const initialData = defaultContent[pageSlug] || defaultSeoSettings;
+                    await setDoc(docRef, initialData);
+                    return initialData;
+                }
+            } catch (error) {
+                console.error(`Failed to fetch SEO data for ${pageSlug}:`, error);
+                return defaultContent[pageSlug] || defaultSeoSettings;
+            }
+        },
+        [`seo-data-${pageSlug}`],
+        { tags: ['settings', 'seo-data', `seo-data-${pageSlug}`], revalidate: 86400 }
+    )();
+});
 
 export async function updateSeoData(pageSlug: string, data: PageSeoContent): Promise<{ success: boolean; error?: string }> {
     try {
         const docRef = doc(firestore, 'page_seo', pageSlug);
         await setDoc(docRef, data, { merge: true });
 
-        // Revalidate the path of the page that was updated
+        revalidateTag(`seo-data-${pageSlug}`);
         const pathToRevalidate = pageSlug === 'home' ? '/' : `/${pageSlug}`;
         revalidatePath(pathToRevalidate, 'page');
-        
-        // Also revalidate the layout to update metadata
         revalidatePath(pathToRevalidate, 'layout');
-        
-        // Revalidate the admin page itself
         revalidatePath('/admin/seo-geo-settings');
 
         return { success: true };

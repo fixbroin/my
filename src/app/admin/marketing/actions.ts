@@ -3,7 +3,8 @@
 
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { firestore } from '@/lib/firebase';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_cache, revalidateTag } from 'next/cache';
+import { cache } from 'react';
 
 interface Setting {
     enabled: boolean;
@@ -29,42 +30,49 @@ export interface MarketingSettings {
 
 const docRef = doc(firestore, 'settings', 'marketing');
 
-export async function getMarketingSettings(): Promise<MarketingSettings> {
-    try {
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return docSnap.data() as MarketingSettings;
-        } else {
-            // Default data if the document doesn't exist
-            const defaultSettingValue = { enabled: false, value: '' };
-            const defaultData: MarketingSettings = {
-                googleTagManagerId: { ...defaultSettingValue },
-                googleAnalyticsId: { ...defaultSettingValue },
-                googleAdsId: { ...defaultSettingValue },
-                googleAdsLabel: { ...defaultSettingValue },
-                googleRemarketing: { ...defaultSettingValue },
-                googleOptimizeId: { ...defaultSettingValue },
-                metaPixelId: { ...defaultSettingValue },
-                metaPixelAccessToken: { ...defaultSettingValue },
-                metaConversionsApiKey: { ...defaultSettingValue },
-                bingUetTagId: { ...defaultSettingValue },
-                pinterestTagId: { ...defaultSettingValue },
-                microsoftClarityId: { ...defaultSettingValue },
-                customHeadScript: { ...defaultSettingValue },
-                customBodyScript: { ...defaultSettingValue },
-            };
-            await setDoc(docRef, defaultData);
-            return defaultData;
-        }
-    } catch (error) {
-        console.error("Failed to fetch marketing settings:", error);
-        throw error;
-    }
-}
+export const getMarketingSettings = cache(async (): Promise<MarketingSettings> => {
+    return await unstable_cache(
+        async () => {
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    return docSnap.data() as MarketingSettings;
+                } else {
+                    // Default data if the document doesn't exist
+                    const defaultSettingValue = { enabled: false, value: '' };
+                    const defaultData: MarketingSettings = {
+                        googleTagManagerId: { ...defaultSettingValue },
+                        googleAnalyticsId: { ...defaultSettingValue },
+                        googleAdsId: { ...defaultSettingValue },
+                        googleAdsLabel: { ...defaultSettingValue },
+                        googleRemarketing: { ...defaultSettingValue },
+                        googleOptimizeId: { ...defaultSettingValue },
+                        metaPixelId: { ...defaultSettingValue },
+                        metaPixelAccessToken: { ...defaultSettingValue },
+                        metaConversionsApiKey: { ...defaultSettingValue },
+                        bingUetTagId: { ...defaultSettingValue },
+                        pinterestTagId: { ...defaultSettingValue },
+                        microsoftClarityId: { ...defaultSettingValue },
+                        customHeadScript: { ...defaultSettingValue },
+                        customBodyScript: { ...defaultSettingValue },
+                    };
+                    await setDoc(docRef, defaultData);
+                    return defaultData;
+                }
+            } catch (error) {
+                console.error("Failed to fetch marketing settings:", error);
+                throw error;
+            }
+        },
+        ['marketing-settings'],
+        { tags: ['settings', 'marketing-settings'], revalidate: 86400 }
+    )();
+});
 
 export async function updateMarketingSettings(settings: MarketingSettings): Promise<void> {
     try {
         await setDoc(docRef, settings, { merge: true });
+        revalidateTag('marketing-settings');
         // Revalidate the entire site layout since these scripts affect every page
         revalidatePath('/', 'layout');
     } catch (error) {

@@ -3,7 +3,8 @@
 
 import { doc, getDoc, setDoc, collection, getDocs, writeBatch, query as firestoreQuery, orderBy, Timestamp } from 'firebase/firestore';
 import { firestore } from '@/lib/firebase';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_cache, revalidateTag } from 'next/cache';
+import { cache } from 'react';
 
 export interface WhyChooseUsFeature {
     id?: string;
@@ -24,68 +25,77 @@ export interface WhyChooseUsContent {
 const contentDocRef = doc(firestore, 'pages', 'why-choose-us');
 const featuresCollectionRef = collection(firestore, 'pages/why-choose-us/features');
 
-export async function getWhyChooseUsContent(): Promise<WhyChooseUsContent> {
-    try {
-        const contentSnap = await getDoc(contentDocRef);
-        let contentData: Omit<WhyChooseUsContent, 'features'>;
+export const getWhyChooseUsContent = cache(async (): Promise<WhyChooseUsContent> => {
+    return await unstable_cache(
+        async () => {
+            try {
+                const contentSnap = await getDoc(contentDocRef);
+                let contentData: Omit<WhyChooseUsContent, 'features'>;
 
-        if (contentSnap.exists()) {
-            const data = contentSnap.data();
-            contentData = {
-                title: data.title,
-                subtitle: data.subtitle,
-                media_url: data.media_url || data.image || 'https://placehold.co/600x800.png',
-                media_type: data.media_type || 'image',
-            };
-        } else {
-            contentData = {
-                title: 'Why Choose CineElite ADS?',
-                subtitle: 'We are committed to delivering excellence and innovation in every project.',
-                media_url: 'https://placehold.co/600x800.png',
-                media_type: 'image'
-            };
-            await setDoc(contentDocRef, contentData);
-        }
+                if (contentSnap.exists()) {
+                    const data = contentSnap.data();
+                    contentData = {
+                        title: data.title,
+                        subtitle: data.subtitle,
+                        media_url: data.media_url || data.image || 'https://placehold.co/600x800.png',
+                        media_type: data.media_type || 'image',
+                    };
+                } else {
+                    contentData = {
+                        title: 'Why Choose CineElite ADS?',
+                        subtitle: 'We are committed to delivering excellence and innovation in every project.',
+                        media_url: 'https://placehold.co/600x800.png',
+                        media_type: 'image'
+                    };
+                    await setDoc(contentDocRef, contentData);
+                }
 
-        const featuresQuery = firestoreQuery(featuresCollectionRef, orderBy('createdAt'));
-        const featuresSnap = await getDocs(featuresQuery);
-        
-        const features: WhyChooseUsFeature[] = featuresSnap.docs.map(doc => {
-            const data = doc.data();
-            const rawDate = data.createdAt;
-            const createdAt = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
-            return {
-                id: doc.id,
-                icon: data.icon,
-                title: data.title,
-                description: data.description,
-                createdAt: createdAt.toISOString(),
-            };
-        });
-        
-        if (features.length === 0) {
-            const defaultFeatures: Omit<WhyChooseUsFeature, 'id' | 'createdAt'>[] = [
-                { icon: 'Zap', title: 'Blazing Fast Performance', description: 'We build websites with Next.js for optimal speed and user experience.' },
-                { icon: 'Smartphone', title: 'Fully Responsive Design', description: 'Your website will look perfect on all devices, from desktops to smartphones.' },
-                { icon: 'Search', title: 'SEO-Optimized', description: 'Built-in SEO best practices to help you rank higher on search engines.' },
-                { icon: 'CircleCheckBig', title: 'Modern Tech Stack', description: 'Leveraging the power of React, Next.js, and Tailwind CSS for robust solutions.' },
-            ];
-            const batch = writeBatch(firestore);
-            defaultFeatures.forEach(feature => {
-                const newDocRef = doc(featuresCollectionRef);
-                batch.set(newDocRef, { ...feature, createdAt: Timestamp.now() });
-            });
-            await batch.commit();
-            return getWhyChooseUsContent();
-        }
+                const featuresQuery = firestoreQuery(featuresCollectionRef, orderBy('createdAt'));
+                const featuresSnap = await getDocs(featuresQuery);
+                
+                const features: WhyChooseUsFeature[] = featuresSnap.docs.map(doc => {
+                    const data = doc.data();
+                    const rawDate = data.createdAt;
+                    const createdAt = rawDate instanceof Timestamp ? rawDate.toDate() : new Date();
+                    return {
+                        id: doc.id,
+                        icon: data.icon,
+                        title: data.title,
+                        description: data.description,
+                        createdAt: createdAt.toISOString(),
+                    };
+                });
+                
+                if (features.length === 0) {
+                    const defaultFeatures: Omit<WhyChooseUsFeature, 'id' | 'createdAt'>[] = [
+                        { icon: 'Zap', title: 'Blazing Fast Performance', description: 'We build websites with Next.js for optimal speed and user experience.' },
+                        { icon: 'Smartphone', title: 'Fully Responsive Design', description: 'Your website will look perfect on all devices, from desktops to smartphones.' },
+                        { icon: 'Search', title: 'SEO-Optimized', description: 'Built-in SEO best practices to help you rank higher on search engines.' },
+                        { icon: 'CircleCheckBig', title: 'Modern Tech Stack', description: 'Leveraging the power of React, Next.js, and Tailwind CSS for robust solutions.' },
+                    ];
+                    const batch = writeBatch(firestore);
+                    defaultFeatures.forEach(feature => {
+                        const newDocRef = doc(featuresCollectionRef);
+                        batch.set(newDocRef, { ...feature, createdAt: Timestamp.now() });
+                    });
+                    await batch.commit();
+                    // Note: In unstable_cache, calling itself recursively might not work as expected or cause infinite loops if not careful.
+                    // But here it's fine because we just committed the data. 
+                    // However, to be safe, let's just return the data we just created.
+                    return { ...contentData, features: defaultFeatures.map((f, i) => ({ ...f, id: `default-${i}`, createdAt: new Date().toISOString() })) };
+                }
 
-        return { ...contentData, features };
+                return { ...contentData, features };
 
-    } catch (error) {
-        console.error('Failed to fetch Why Choose Us content:', error);
-        throw new Error('Could not fetch Why Choose Us content.');
-    }
-}
+            } catch (error) {
+                console.error('Failed to fetch Why Choose Us content:', error);
+                throw new Error('Could not fetch Why Choose Us content.');
+            }
+        },
+        ['why-choose-us-content'],
+        { tags: ['settings', 'why-choose-us-content'], revalidate: 86400 }
+    )();
+});
 
 export async function updateWhyChooseUsContent(content: Omit<WhyChooseUsContent, 'features'> & { features: Omit<WhyChooseUsFeature, 'id' | 'createdAt'>[] }): Promise<void> {
     try {
@@ -104,6 +114,7 @@ export async function updateWhyChooseUsContent(content: Omit<WhyChooseUsContent,
 
         await batch.commit();
 
+        revalidateTag('why-choose-us-content');
         revalidatePath('/');
         revalidatePath('/admin/settings');
     } catch (error) {

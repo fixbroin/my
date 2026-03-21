@@ -1,9 +1,8 @@
 
 'use client';
 
-import { Check } from 'lucide-react';
+import { Check, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { getPricingPlans, getPricingPageContent, PricingPlan } from '@/app/admin/settings/actions/pricing-actions';
 import VantaBackground from '../VantaBackground';
@@ -19,35 +18,75 @@ function parsePrice(price: string): number {
     return parseFloat(numericString) || 0;
 }
 
-const PricingCard = ({ plan, useVanta, onBookNowClick }: { plan: PricingPlan; useVanta: boolean; onBookNowClick: () => void }) => {
+const PricingCard = ({ plan, onBookNowClick }: { plan: PricingPlan; onBookNowClick: () => void }) => {
+    const isCustom = plan.title.toLowerCase().includes('custom');
+    
     return (
         <ScrollAnimation as="div" variant="fadeInUp">
-            <Card
-                className={cn('flex flex-col h-full', plan.is_featured && 'border-2 border-primary shadow-lg')}
-            >
-                <CardHeader>
-                    <CardTitle>{plan.title}</CardTitle>
-                    <CardDescription className="pt-2">{plan.description}</CardDescription>
-                    <p className="pt-4 text-4xl font-bold font-headline">{plan.price}</p>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                    <ul className="space-y-3">
+            <div className={cn(
+                "relative group h-full transition-all duration-500",
+                plan.is_featured ? "scale-105 z-10" : "hover:scale-[1.02]"
+            )}>
+                {plan.is_featured && (
+                    <div className="absolute -top-5 inset-x-0 flex justify-center">
+                        <div className="bg-primary text-white text-[10px] uppercase tracking-widest font-black px-4 py-1.5 rounded-full shadow-lg shadow-primary/20 flex items-center gap-1.5">
+                            <Sparkles className="h-3 w-3" />
+                            Most Popular
+                        </div>
+                    </div>
+                )}
+
+                <div className={cn(
+                    "h-full flex flex-col rounded-[2.5rem] p-8 lg:p-10 transition-all duration-300 border shadow-sm",
+                    plan.is_featured 
+                        ? "bg-[#0f1117] border-primary/50 dark:border-primary shadow-2xl shadow-primary/10 text-white" 
+                        : "bg-white dark:bg-[#0f1117] border-slate-200 dark:border-white/5 text-slate-900 dark:text-white"
+                )}>
+                    <div className="mb-8">
+                        <h3 className={cn(
+                            "text-xl font-bold mb-2",
+                            plan.is_featured ? "text-primary" : "text-slate-900 dark:text-white"
+                        )}>{plan.title}</h3>
+                        <p className={cn(
+                            "text-sm font-medium leading-relaxed",
+                            plan.is_featured ? "text-white" : "text-white dark:text-white"
+                        )}>{plan.description}</p>
+                    </div>
+
+                    <div className="mb-8 flex items-baseline gap-1">
+                        <span className="text-4xl lg:text-5xl font-black tracking-tighter">{plan.price}</span>
+                        {!isCustom && <span className={cn("text-sm font-bold opacity-60")}>/project</span>}
+                    </div>
+
+                    <div className="flex-grow space-y-4 mb-10">
                         {plan.features.map((feature) => (
-                            <li key={feature.name} className="flex items-center">
-                                <Check className="mr-2 h-5 w-5 text-green-500" />
-                                <span className="text-muted-foreground">{feature.name}</span>
-                            </li>
+                            <div key={feature.name} className="flex items-start gap-3">
+                                <div className={cn(
+                                    "mt-1 p-0.5 rounded-full flex-shrink-0",
+                                    plan.is_featured ? "bg-primary/20 text-primary" : "bg-primary/10 text-primary"
+                                )}>
+                                    <Check className="h-3.5 w-3.5 stroke-[3]" />
+                                </div>
+                                <span className={cn(
+                                    "text-sm font-semibold",
+                                    plan.is_featured ? "text-slate-300" : "text-slate-600 dark:text-white"
+                                )}>{feature.name}</span>
+                            </div>
                         ))}
-                    </ul>
-                </CardContent>
-                <CardFooter>
-                    <Button asChild className="w-full" variant={plan.is_featured ? 'default' : 'outline'} onClick={onBookNowClick}>
-                        <LoadingLink href={plan.title.toLowerCase().includes('custom') ? '/contact' : `/checkout?plan=${encodeURIComponent(plan.title)}&price=${parsePrice(plan.price)}`}>
-                            {plan.title.toLowerCase().includes('custom') ? 'Get Quote' : 'Pay Now'}
+                    </div>
+
+                    <Button asChild size="lg" className={cn(
+                        "w-full h-14 rounded-2xl font-black text-base transition-all",
+                        plan.is_featured 
+                            ? "bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/25" 
+                            : "bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90"
+                    )} onClick={onBookNowClick}>
+                        <LoadingLink href={isCustom ? '/contact' : `/checkout?plan=${encodeURIComponent(plan.title)}&price=${parsePrice(plan.price)}`}>
+                            {isCustom ? 'Get Custom Quote' : 'Choose Plan'}
                         </LoadingLink>
                     </Button>
-                </CardFooter>
-            </Card>
+                </div>
+            </div>
         </ScrollAnimation>
     );
 };
@@ -92,35 +131,33 @@ export default function PricingSection() {
         });
     };
 
-    if (isLoading || !pageContent) {
-        return (
-            <section id="pricing" className="relative">
-                <div className="container">
-                    {/* You can add skeleton loaders here if you want */}
-                </div>
-            </section>
-        );
-    }
+    if (isLoading || !pageContent) return null;
     
     const sectionVantaConfig = vantaSettings?.sections?.pricing;
     const useVanta = vantaSettings?.globalEnable && sectionVantaConfig?.enabled;
     
     return (
-        <section id="pricing" className="relative">
+        <section id="pricing" className="relative overflow-hidden py-24">
             {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
-            <div className="container">
-                <ScrollAnimation variant="fadeInUp" className="text-center">
-                    <h2 className="text-3xl font-bold md:text-4xl" style={useVanta ? { color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.5)' } : {}}>{pageContent.title}</h2>
-                    <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground" style={useVanta ? { color: 'white', textShadow: '0 1px 3px rgba(0,0,0,0.4)' } : {}}>
+            <div className="container relative z-10">
+                <ScrollAnimation variant="fadeInUp" className="text-center mb-20">
+                    <h2 className={cn(
+                        "text-4xl md:text-5xl font-black tracking-tight mb-4",
+                        useVanta ? "text-white" : "text-slate-900 dark:text-white"
+                    )}>{pageContent.title}</h2>
+                    <div className="w-20 h-1.5 bg-primary mx-auto rounded-full mb-6" />
+                    <p className={cn(
+                        "mx-auto max-w-2xl text-lg font-medium",
+                        useVanta ? "text-white" : "text-slate-600 dark:text-white"
+                    )}>
                         {pageContent.subtitle}
                     </p>
                 </ScrollAnimation>
-                <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
                     {pricingPlans.map((plan, index) => (
                          <PricingCard
                             key={plan.id || index}
                             plan={plan}
-                            useVanta={useVanta}
                             onBookNowClick={() => handleBookNowClick(plan)}
                         />
                     ))}

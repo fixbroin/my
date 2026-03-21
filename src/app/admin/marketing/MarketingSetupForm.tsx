@@ -20,9 +20,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { getMarketingSettings, updateMarketingSettings, MarketingSettings } from './actions';
+import { getMarketingSettings, updateMarketingSettings } from './actions';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Save, Chrome, Facebook as FbIcon, Code, Zap } from 'lucide-react';
 
 const settingSchema = z.object({
   enabled: z.boolean(),
@@ -105,15 +105,14 @@ export default function MarketingSetupForm() {
 
   if (isLoading) {
     return (
-        <Card>
+        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5">
             <CardHeader>
-                <Skeleton className="h-8 w-1/2" />
-                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-8 w-1/2 bg-slate-100 dark:bg-white/5" />
+                <Skeleton className="h-4 w-3/4 bg-slate-100 dark:bg-white/5" />
             </CardHeader>
             <CardContent className="space-y-6">
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-10 w-1/3" />
+                <Skeleton className="h-24 w-full bg-slate-100 dark:bg-white/5" />
+                <Skeleton className="h-24 w-full bg-slate-100 dark:bg-white/5" />
             </CardContent>
         </Card>
     );
@@ -123,56 +122,77 @@ export default function MarketingSetupForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         
-        <Card>
-            <CardHeader>
-                <CardTitle>Google Integrations</CardTitle>
+        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-orange-500/10 text-orange-500">
+                        <Chrome className="h-5 w-5" />
+                    </div>
+                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Google Ecosystem</CardTitle>
+                </div>
             </CardHeader>
-            <CardContent className="space-y-6">
-                <SettingInput control={form.control} name="googleTagManagerId" label="Google Tag Manager ID" placeholder="GTM-XXXXXXX" />
-                <SettingInput control={form.control} name="googleAnalyticsId" label="Google Analytics 4 Measurement ID" placeholder="G-XXXXXXXXXX" />
-                <SettingInput control={form.control} name="googleAdsId" label="Google Ads Conversion ID" placeholder="AW-XXXXXXXXX" />
-                <SettingInput control={form.control} name="googleAdsLabel" label="Google Ads Conversion Label" placeholder="Optional conversion label" />
-                <SettingInput control={form.control} name="googleOptimizeId" label="Google Optimize Container ID" placeholder="GTM-XXXXXXX or OPT-XXXXXXX" />
-                <SettingTextarea control={form.control} name="googleRemarketing" label="Google Remarketing Tag" description="Paste the full remarketing tag snippet here." />
+            <CardContent className="space-y-6 pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <SettingInput control={form.control} name="googleTagManagerId" label="Tag Manager ID" placeholder="GTM-XXXXXXX" />
+                    <SettingInput control={form.control} name="googleAnalyticsId" label="Analytics 4 ID" placeholder="G-XXXXXXXXXX" />
+                    <SettingInput control={form.control} name="googleAdsId" label="Ads Conversion ID" placeholder="AW-XXXXXXXXX" />
+                    <SettingInput control={form.control} name="googleAdsLabel" label="Ads Label" placeholder="Optional label" />
+                </div>
+                <SettingTextarea control={form.control} name="googleRemarketing" label="Remarketing Tag" description="Paste the full remarketing snippet." />
             </CardContent>
         </Card>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Facebook / Meta</CardTitle>
+        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-blue-600/10 text-blue-600">
+                        <FbIcon className="h-5 w-5" />
+                    </div>
+                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Facebook / Meta</CardTitle>
+                </div>
             </CardHeader>
-            <CardContent className="space-y-6">
-                 <SettingInput control={form.control} name="metaPixelId" label="Meta Pixel ID" placeholder="XXXXXXXXXXXXXXX" />
-                 <SettingInput control={form.control} name="metaPixelAccessToken" label="Meta Pixel Access Token" description="For server-side events via Meta Conversions API." />
-                 <SettingInput control={form.control} name="metaConversionsApiKey" label="Meta Conversions API Key (optional)" />
+            <CardContent className="space-y-6 pt-6">
+                 <SettingInput control={form.control} name="metaPixelId" label="Pixel ID" placeholder="XXXXXXXXXXXXXXX" />
+                 <SettingInput control={form.control} name="metaPixelAccessToken" label="CAPI Access Token" description="For Meta Conversions API." />
             </CardContent>
         </Card>
 
-        <Card>
-            <CardHeader>
-                <CardTitle>Other Platforms</CardTitle>
+        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500">
+                        <Zap className="h-5 w-5" />
+                    </div>
+                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Other Platforms</CardTitle>
+                </div>
             </CardHeader>
-            <CardContent className="space-y-6">
-                <SettingInput control={form.control} name="bingUetTagId" label="Microsoft Bing Ads UET Tag ID" placeholder="XXXXXXXXX" />
-                <SettingInput control={form.control} name="pinterestTagId" label="Pinterest Tag ID" />
-                <SettingInput control={form.control} name="microsoftClarityId" label="Microsoft Clarity Project ID" />
+            <CardContent className="space-y-6 pt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <SettingInput control={form.control} name="bingUetTagId" label="Bing UET ID" placeholder="XXXXXXXXX" />
+                    <SettingInput control={form.control} name="microsoftClarityId" label="Clarity ID" />
+                </div>
             </CardContent>
         </Card>
         
-        <Card>
-            <CardHeader>
-                <CardTitle>Custom Scripts</CardTitle>
-                <CardDescription>Use for any other scripts not listed above. Be careful, incorrect scripts can break your site.</CardDescription>
+        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
+                        <Code className="h-5 w-5" />
+                    </div>
+                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Developer Scripts</CardTitle>
+                </div>
             </CardHeader>
-            <CardContent className="space-y-6">
-                 <SettingTextarea control={form.control} name="customHeadScript" label="Custom Head Script" description="Paste only the JavaScript code, WITHOUT the <script> tags. This script will be injected before the closing </head> tag." />
-                 <SettingTextarea control={form.control} name="customBodyScript" label="Custom Body Script" description="Paste only the JavaScript code, WITHOUT the <script> tags. This script will be injected before the closing </body> tag." />
+            <CardContent className="space-y-6 pt-6">
+                 <SettingTextarea control={form.control} name="customHeadScript" label="Global <head> Injector" description="Paste pure JS code only." />
+                 <SettingTextarea control={form.control} name="customBodyScript" label="Global <body> Injector" description="Paste pure JS code only." />
             </CardContent>
         </Card>
         
 
-        <Button type="submit" disabled={isPending}>
-          {isPending ? 'Saving...' : 'Save All Settings'}
+        <Button type="submit" disabled={isPending} className="w-full h-14 rounded-[2rem] font-black text-lg gap-2 shadow-xl shadow-primary/20">
+          {isPending ? 'Syncing Ecosystem...' : 'Save Marketing Stack'}
+          <Save className="h-5 w-5" />
         </Button>
       </form>
     </Form>
@@ -180,10 +200,10 @@ export default function MarketingSetupForm() {
 }
 
 
-// Helper components for consistent UI
+// Helper components
 type SettingInputProps = {
     control: any;
-    name: keyof MarketingFormData;
+    name: string;
     label: string;
     placeholder?: string;
     description?: string;
@@ -195,22 +215,22 @@ function SettingInput({ control, name, label, placeholder, description }: Settin
             control={control}
             name={name}
             render={({ field }) => (
-                <div className="p-4 border rounded-lg space-y-4">
+                <div className="p-5 border border-slate-100 dark:border-white/5 rounded-3xl space-y-4 bg-slate-50/30 dark:bg-white/[0.01]">
                     <div className="flex items-center justify-between">
-                        <FormLabel>{label}</FormLabel>
+                        <FormLabel className="text-slate-700 dark:text-gray-300 font-bold">{label}</FormLabel>
                         <Switch
                             checked={field.value.enabled}
                             onCheckedChange={(checked) => field.onChange({ ...field.value, enabled: checked })}
                         />
                     </div>
                     {field.value.enabled && (
-                        <>
+                        <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
                             <FormControl>
-                                <Input placeholder={placeholder} value={field.value.value || ''} onChange={(e) => field.onChange({ ...field.value, value: e.target.value })} />
+                                <Input placeholder={placeholder} value={field.value.value || ''} onChange={(e) => field.onChange({ ...field.value, value: e.target.value })} className="bg-white dark:bg-white/5 border-slate-200 dark:border-white/10" />
                             </FormControl>
-                            {description && <FormDescription>{description}</FormDescription>}
+                            {description && <FormDescription className="text-[10px] uppercase font-bold tracking-wider text-white">{description}</FormDescription>}
                             <FormMessage />
-                        </>
+                        </div>
                     )}
                 </div>
             )}
@@ -224,27 +244,27 @@ function SettingTextarea({ control, name, label, placeholder, description }: Set
             control={control}
             name={name}
             render={({ field }) => (
-                <div className="p-4 border rounded-lg space-y-4">
+                <div className="p-5 border border-slate-100 dark:border-white/5 rounded-3xl space-y-4 bg-slate-50/30 dark:bg-white/[0.01]">
                     <div className="flex items-center justify-between">
-                        <FormLabel>{label}</FormLabel>
+                        <FormLabel className="text-slate-700 dark:text-gray-300 font-bold">{label}</FormLabel>
                         <Switch
                             checked={field.value.enabled}
                             onCheckedChange={(checked) => field.onChange({ ...field.value, enabled: checked })}
                         />
                     </div>
                     {field.value.enabled && (
-                        <>
+                        <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
                             <FormControl>
                                 <Textarea
                                     placeholder={placeholder}
-                                    className="min-h-32 font-mono text-xs"
+                                    className="min-h-32 font-mono text-[11px] bg-white dark:bg-white/5 border-slate-200 dark:border-white/10"
                                     value={field.value.value || ''}
                                     onChange={(e) => field.onChange({ ...field.value, value: e.target.value })}
                                 />
                             </FormControl>
-                            {description && <FormDescription>{description}</FormDescription>}
+                            {description && <FormDescription className="text-[10px] uppercase font-bold tracking-wider text-white">{description}</FormDescription>}
                             <FormMessage />
-                        </>
+                        </div>
                     )}
                 </div>
             )}

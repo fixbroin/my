@@ -3,7 +3,7 @@
 
 import { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { Expand } from 'lucide-react';
+import { Maximize } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PortfolioItem } from '@/app/admin/settings/actions/portfolio-actions';
 
@@ -29,14 +29,20 @@ export default function PortfolioMedia({ item }: PortfolioMediaProps) {
     const video = videoRef.current;
     if (!video) return;
 
-    if (video.requestFullscreen) {
-      video.requestFullscreen();
-    } else if ((video as any).mozRequestFullScreen) { /* Firefox */
-      (video as any).mozRequestFullScreen();
-    } else if ((video as any).webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-      (video as any).webkitRequestFullscreen();
-    } else if ((video as any).msRequestFullscreen) { /* IE/Edge */
-      (video as any).msRequestFullscreen();
+    try {
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if ((video as any).webkitEnterFullscreen) {
+          (video as any).webkitEnterFullscreen(); // iOS Safari
+        } else if ((video as any).webkitRequestFullscreen) {
+          (video as any).webkitRequestFullscreen();
+        } else if ((video as any).mozRequestFullScreen) {
+          (video as any).mozRequestFullScreen();
+        } else if ((video as any).msRequestFullscreen) {
+          (video as any).msRequestFullscreen();
+        }
+    } catch (err) {
+        console.error("Fullscreen error:", err);
     }
   };
   
@@ -48,62 +54,63 @@ export default function PortfolioMedia({ item }: PortfolioMediaProps) {
       if (document.fullscreenElement === video) {
         video.muted = false;
         video.controls = true;
-        video.setAttribute('controlsList', 'nodownload');
       } else {
         video.muted = true;
         video.controls = false;
-        video.removeAttribute('controlsList');
       }
     };
     
     document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
     
     return () => {
       document.removeEventListener('fullscreenchange', onFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', onFullscreenChange);
     };
 
   }, []);
 
   return (
-    <div className="relative h-full w-full bg-muted">
+    <div className="relative h-full w-full bg-black overflow-hidden flex items-center justify-center">
        {item.mediaType === 'video' ? (
         youTubeVideoId ? (
           <iframe
-            src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}`}
+            src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}&controls=1`}
             title={item.title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
           ></iframe>
         ) : (
-          <>
+          <div className="relative h-full w-full">
             <video
               ref={videoRef}
               src={item.mediaUrl}
-              className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
               autoPlay
               loop
               muted
               playsInline
             />
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <Button
               variant="secondary"
               size="icon"
-              className="absolute bottom-2 right-2 h-8 w-8 opacity-70 transition-opacity group-hover:opacity-100"
+              className="absolute bottom-4 right-4 h-10 w-10 rounded-full bg-white/20 backdrop-blur-md border-white/30 text-white hover:bg-white/40 z-30 pointer-events-auto shadow-2xl transition-all hover:scale-110 active:scale-90"
               onClick={handleFullscreen}
-              aria-label="Play video in fullscreen with sound"
+              aria-label="Play video in fullscreen"
             >
-              <Expand className="h-4 w-4" />
+              <Maximize className="h-5 w-5" />
             </Button>
-          </>
+          </div>
         )
       ) : (
         <Image
           src={item.mediaUrl}
           alt={item.title}
           fill
-          className="object-contain transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           data-ai-hint="portfolio item"
         />
       )}

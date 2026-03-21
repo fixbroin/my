@@ -6,8 +6,9 @@ import Image from 'next/image';
 
 export default function Logo({ appName, logoUrl }: { appName?: string, logoUrl?: string }) {
   const name = appName || 'CineElite ADS';
+
   return (
-    <Link href="/" className="inline-flex items-center gap-2">
+    <Link href="/" className="inline-flex items-center gap-2 whitespace-nowrap">
       {logoUrl && (
         <div className="relative h-10 w-10">
           <Image 
@@ -18,7 +19,7 @@ export default function Logo({ appName, logoUrl }: { appName?: string, logoUrl?:
           />
         </div>
       )}
-      <h1 className="text-2xl font-bold font-headline text-primary">
+      <h1 className="text-2xl font-bold font-headline text-primary whitespace-nowrap">
         {name}
       </h1>
     </Link>
