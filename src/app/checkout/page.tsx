@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { APP_NAME } from '@/lib/config';
 import CheckoutForm from './CheckoutForm';
 import { Skeleton } from '@/components/ui/skeleton';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: `Checkout | ${APP_NAME}`,
@@ -90,8 +91,11 @@ export default function CheckoutPage({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
     return (
-        <Suspense fallback={<CheckoutSkeleton />}>
-            <CheckoutPageContent searchParams={searchParams} />
-        </Suspense>
+        <>
+            <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+            <Suspense fallback={<CheckoutSkeleton />}>
+                <CheckoutPageContent searchParams={searchParams} />
+            </Suspense>
+        </>
     )
 }

@@ -36,7 +36,7 @@ export default async function PortfolioSection() {
     );
 
   return (
-    <section id="portfolio" className="relative overflow-hidden py-24 bg-slate-50/50 dark:bg-black/40">
+    <section id="portfolio" className="relative overflow-hidden py-14 bg-slate-50/50 dark:bg-black/40">
        {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
        
       <div className="container relative z-10">

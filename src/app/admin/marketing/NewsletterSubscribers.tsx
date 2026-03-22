@@ -104,11 +104,11 @@ export default function NewsletterSubscribers() {
                         <TableBody>
                             {isLoading ? (
                                 <TableRow>
-                                    <TableCell colSpan={3} className="text-center py-10 text-white">Loading subscribers...</TableCell>
+                                    <TableCell colSpan={3} className="text-center py-10 text-foreground">Loading subscribers...</TableCell>
                                 </TableRow>
                             ) : subscribers.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={3} className="text-center py-10 text-white font-medium italic">No subscribers yet.</TableCell>
+                                    <TableCell colSpan={3} className="text-center py-10 text-muted-foreground font-medium italic">No subscribers yet.</TableCell>
                                 </TableRow>
                             ) : (
                                 subscribers.map((sub) => (

@@ -92,23 +92,23 @@ export default function SeoGeoSettingsForm() {
   }
 
   return (
-    <Card className="w-full shadow-lg bg-[#161922] border-white/5">
+    <Card className="w-full shadow-lg bg-card border-border">
       <CardHeader>
-        <CardTitle className="text-2xl text-white">Advanced Page SEO</CardTitle>
-        <CardDescription className="text-gray-400">Manage meta tags, OpenGraph data, and Schema.org settings for maximum search engine visibility.</CardDescription>
+        <CardTitle className="text-2xl text-foreground">Advanced Page SEO</CardTitle>
+        <CardDescription className="text-muted-foreground">Manage meta tags, OpenGraph data, and Schema.org settings for maximum search engine visibility.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormItem>
-              <FormLabel className="text-gray-300">Select Page to Optimize</FormLabel>
+              <FormLabel className="text-muted-foreground">Select Page to Optimize</FormLabel>
               <Select onValueChange={setSelectedPage} defaultValue={selectedPage}>
                 <FormControl>
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white h-11 focus:ring-primary/30">
+                  <SelectTrigger className="bg-muted border-border text-foreground h-11 focus:ring-primary/30">
                     <SelectValue placeholder="Select a page to edit" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className="bg-[#1c1f2a] border-white/10 text-gray-300">
+                <SelectContent className="bg-popover border-border text-popover-foreground">
                   {availablePages.map((page) => (
                     <SelectItem key={page.value} value={page.value} className="focus:bg-primary/20 focus:text-white">
                       {page.label}
@@ -130,15 +130,15 @@ export default function SeoGeoSettingsForm() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-6">
-                        <h3 className="text-lg font-semibold border-b border-white/5 pb-2 text-white">On-Page Content</h3>
+                        <h3 className="text-lg font-semibold border-b border-border pb-2 text-foreground">On-Page Content</h3>
                         <FormField
                         control={form.control}
                         name="h1_title"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel className="text-gray-300">H1 Title</FormLabel>
+                            <FormLabel className="text-muted-foreground">H1 Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="Main heading for the page" {...field} className="bg-white/5 border-white/10 text-white h-11 focus-visible:ring-primary/30" />
+                                <Input placeholder="Main heading for the page" {...field} className="bg-muted border-border text-foreground h-11 focus-visible:ring-primary/30" />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -149,9 +149,9 @@ export default function SeoGeoSettingsForm() {
                         name="paragraph"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel className="text-gray-300">Intro Paragraph</FormLabel>
+                            <FormLabel className="text-muted-foreground">Intro Paragraph</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Introductory paragraph for the page" {...field} className="bg-white/5 border-white/10 text-white min-h-[100px] focus-visible:ring-primary/30" />
+                                <Textarea placeholder="Introductory paragraph for the page" {...field} className="bg-muted border-border text-foreground min-h-[100px] focus-visible:ring-primary/30" />
                             </FormControl>
                             <FormMessage />
                             </FormItem>
@@ -160,17 +160,17 @@ export default function SeoGeoSettingsForm() {
                     </div>
 
                     <div className="space-y-6">
-                        <h3 className="text-lg font-semibold border-b border-white/5 pb-2 text-white">Meta Tags (Google)</h3>
+                        <h3 className="text-lg font-semibold border-b border-border pb-2 text-foreground">Meta Tags (Google)</h3>
                         <FormField
                         control={form.control}
                         name="meta_title"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel className="text-gray-300">Meta Title</FormLabel>
+                            <FormLabel className="text-muted-foreground">Meta Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="Title for browser tab and search results" {...field} className="bg-white/5 border-white/10 text-white h-11 focus-visible:ring-primary/30" />
+                                <Input placeholder="Title for browser tab and search results" {...field} className="bg-muted border-border text-foreground h-11 focus-visible:ring-primary/30" />
                             </FormControl>
-                            <FormDescription className="text-gray-500 text-[11px]">Optimal length: 50-60 characters.</FormDescription>
+                            <FormDescription className="text-muted-foreground text-[11px]">Optimal length: 50-60 characters.</FormDescription>
                             <FormMessage />
                             </FormItem>
                         )}
@@ -180,11 +180,11 @@ export default function SeoGeoSettingsForm() {
                         name="meta_description"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel className="text-gray-300">Meta Description</FormLabel>
+                            <FormLabel className="text-muted-foreground">Meta Description</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Description for search engine results" {...field} className="bg-white/5 border-white/10 text-white min-h-[100px] focus-visible:ring-primary/30" />
+                                <Textarea placeholder="Description for search engine results" {...field} className="bg-muted border-border text-foreground min-h-[100px] focus-visible:ring-primary/30" />
                             </FormControl>
-                            <FormDescription className="text-gray-500 text-[11px]">Optimal length: 150-160 characters.</FormDescription>
+                            <FormDescription className="text-muted-foreground text-[11px]">Optimal length: 150-160 characters.</FormDescription>
                             <FormMessage />
                             </FormItem>
                         )}
@@ -193,16 +193,16 @@ export default function SeoGeoSettingsForm() {
                 </div>
 
                 <div className="space-y-6">
-                    <h3 className="text-lg font-semibold border-b border-white/5 pb-2 text-white">Technical & Advanced SEO</h3>
+                    <h3 className="text-lg font-semibold border-b border-border pb-2 text-foreground">Technical & Advanced SEO</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormField
                             control={form.control}
                             name="meta_keywords"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel className="text-gray-300">Meta Keywords</FormLabel>
+                                <FormLabel className="text-muted-foreground">Meta Keywords</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Comma, separated, keywords" {...field} className="bg-white/5 border-white/10 text-white h-11 focus-visible:ring-primary/30" />
+                                    <Input placeholder="Comma, separated, keywords" {...field} className="bg-muted border-border text-foreground h-11 focus-visible:ring-primary/30" />
                                 </FormControl>
                                 <FormMessage />
                                 </FormItem>
@@ -213,11 +213,11 @@ export default function SeoGeoSettingsForm() {
                             name="canonical_url"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel className="text-gray-300">Canonical URL</FormLabel>
+                                <FormLabel className="text-muted-foreground">Canonical URL</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://example.com/page" {...field} className="bg-white/5 border-white/10 text-white h-11 focus-visible:ring-primary/30" />
+                                    <Input placeholder="https://example.com/page" {...field} className="bg-muted border-border text-foreground h-11 focus-visible:ring-primary/30" />
                                 </FormControl>
-                                <FormDescription className="text-gray-500 text-[11px]">Leave empty to use page defaults.</FormDescription>
+                                <FormDescription className="text-muted-foreground text-[11px]">Leave empty to use page defaults.</FormDescription>
                                 <FormMessage />
                                 </FormItem>
                             )}
@@ -227,11 +227,11 @@ export default function SeoGeoSettingsForm() {
                             name="og_image"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel className="text-gray-300">OpenGraph Image URL</FormLabel>
+                                <FormLabel className="text-muted-foreground">OpenGraph Image URL</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="URL for social media sharing" {...field} className="bg-white/5 border-white/10 text-white h-11 focus-visible:ring-primary/30" />
+                                    <Input placeholder="URL for social media sharing" {...field} className="bg-muted border-border text-foreground h-11 focus-visible:ring-primary/30" />
                                 </FormControl>
-                                <FormDescription className="text-gray-500 text-[11px]">Recommended: 1200x630px.</FormDescription>
+                                <FormDescription className="text-muted-foreground text-[11px]">Recommended: 1200x630px.</FormDescription>
                                 <FormMessage />
                                 </FormItem>
                             )}
@@ -241,21 +241,21 @@ export default function SeoGeoSettingsForm() {
                             name="schema_type"
                             render={({ field }) => (
                                 <FormItem>
-                                <FormLabel className="text-gray-300">Structured Data Type (JSON-LD)</FormLabel>
+                                <FormLabel className="text-muted-foreground">Structured Data Type (JSON-LD)</FormLabel>
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
-                                    <SelectTrigger className="bg-white/5 border-white/10 text-white h-11 focus:ring-primary/30">
+                                    <SelectTrigger className="bg-muted border-border text-foreground h-11 focus:ring-primary/30">
                                         <SelectValue placeholder="Select schema type" />
                                     </SelectTrigger>
                                     </FormControl>
-                                    <SelectContent className="bg-[#1c1f2a] border-white/10 text-gray-300">
+                                    <SelectContent className="bg-popover border-border text-popover-foreground">
                                         <SelectItem value="Organization" className="focus:bg-primary/20 focus:text-white">Organization</SelectItem>
                                         <SelectItem value="LocalBusiness" className="focus:bg-primary/20 focus:text-white">Local Business</SelectItem>
                                         <SelectItem value="ProfessionalService" className="focus:bg-primary/20 focus:text-white">Professional Service</SelectItem>
                                         <SelectItem value="WebSite" className="focus:bg-primary/20 focus:text-white">Generic WebSite</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <FormDescription className="text-gray-500 text-[11px]">Helps Google understand your page better.</FormDescription>
+                                <FormDescription className="text-muted-foreground text-[11px]">Helps Google understand your page better.</FormDescription>
                                 <FormMessage />
                                 </FormItem>
                             )}

@@ -36,7 +36,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Mission Section */}
-      <section className="py-24 lg:py-32">
+      <section className="py-14 lg:py-32">
         <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                 <ScrollAnimation variant="slideInLeft" className="relative aspect-square w-full">
@@ -67,7 +67,7 @@ export default async function AboutPage() {
       </section>
       
       {/* Tech Stack Section */}
-      <section className="py-24 lg:py-32 bg-slate-900 text-white relative overflow-hidden">
+      <section className="py-14 lg:py-32 bg-slate-900 text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(124,58,237,0.1),transparent_70%)]" />
         <div className="container relative z-10">
             <ScrollAnimation variant="fadeInUp" className="text-center mb-20">

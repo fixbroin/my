@@ -25,13 +25,23 @@ const navLinks = [
 function HeaderContent({ settings }: { settings?: GeneralSettings | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!mounted) {
+    return (
+        <header className="sticky top-0 z-50 w-full border-b bg-background border-border h-16 opacity-0">
+            <div className="container h-full flex items-center justify-between" />
+        </header>
+    );
+  }
 
   const NavLink = ({ href, label }: { href: string, label: string }) => {
     const isActive = pathname === href;
@@ -59,7 +69,7 @@ function HeaderContent({ settings }: { settings?: GeneralSettings | null }) {
   "bg-background/80 backdrop-blur-xl border-border",
   scrolled ? "h-14 shadow-sm" : "h-16"
 )}>
-      <div className="container h-full flex items-center justify-between">
+      <div className="container h-full flex items-center justify-between md:px-8">
         <Logo appName={settings?.website_name} logoUrl={settings?.logo} />
         
         <nav className="hidden items-center space-x-10 lg:flex">

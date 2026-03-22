@@ -19,7 +19,7 @@ export default async function FaqSection() {
   const useVanta = vantaSettings.globalEnable && sectionVantaConfig?.enabled;
 
   return (
-    <section id="faq" className="relative overflow-hidden py-24 bg-slate-50 dark:bg-black/20">
+    <section id="faq" className="relative overflow-hidden py-14 bg-slate-50 dark:bg-black/20">
       {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
       
       <div className="container relative z-10">

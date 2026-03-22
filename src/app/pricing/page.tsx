@@ -35,7 +35,7 @@ export default async function PricingPage() {
       </div>
 
       {/* Trust Quote */}
-      <section className="py-24 bg-slate-900 text-white">
+      <section className="py-14 bg-slate-900 text-white">
         <div className="container text-center">
             <ScrollAnimation variant="fadeInUp" className="max-w-4xl mx-auto">
                 <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-8">No hidden fees. Just <span className="text-primary">pure results.</span></h2>

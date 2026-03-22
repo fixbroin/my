@@ -23,7 +23,7 @@ export default async function WhyChooseUsSection() {
     };
 
   return (
-    <section id="why-choose-us" className="relative overflow-hidden py-24">
+    <section id="why-choose-us" className="relative overflow-hidden py-14">
        {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
       
       <div className="container relative z-10">
@@ -74,18 +74,7 @@ export default async function WhyChooseUsSection() {
                 <PortfolioMedia item={mediaItem as any} />
             </div>
             
-            {/* Floating Achievement Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-card text-card-foreground p-6 rounded-3xl shadow-2xl border border-border animate-bounce-fab">
-                <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500">
-                        <Sparkles className="h-6 w-6" />
-                    </div>
-                    <div>
-                        <p className="text-xs font-black uppercase tracking-widest text-white">Award Winning</p>
-                        <p className="text-lg font-black text-slate-900 dark:text-white">Design Studio</p>
-                    </div>
-                </div>
-            </div>
+            
           </ScrollAnimation>
         </div>
       </div>

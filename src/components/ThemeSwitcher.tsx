@@ -9,9 +9,28 @@ import { Button } from "@/components/ui/button"
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light")
+  }
+
+  if (!mounted) {
+    return (
+      <Button 
+        variant="outline" 
+        size="icon" 
+        className="rounded-xl border-border bg-card/50 shadow-sm h-10 w-10 opacity-0"
+        disabled
+      >
+        <div className="h-5 w-5" />
+      </Button>
+    )
   }
 
   return (

@@ -23,7 +23,7 @@ export default async function ContactSection() {
   ].filter(item => item.value && item.value !== '');
 
   return (
-    <section id="contact" className="relative overflow-hidden py-24">
+    <section id="contact" className="relative overflow-hidden py-14">
       {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
       
       <div className="container relative z-10">
@@ -60,8 +60,14 @@ export default async function ContactSection() {
                                 <item.icon className="h-5 w-5" />
                             </div>
                             <div>
-                                <p className="text-[10px] font-black uppercase tracking-widest text-white mb-1">{item.label}</p>
-                                <p className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">{item.value}</p>
+                                <p className={cn(
+                                    "text-[10px] font-black uppercase tracking-widest mb-1",
+                                    useVanta ? "text-white/60" : "text-muted-foreground"
+                                )}>{item.label}</p>
+                                <p className={cn(
+                                    "text-lg font-bold tracking-tight",
+                                    useVanta ? "text-white" : "text-foreground"
+                                )}>{item.value}</p>
                             </div>
                         </div>
                     </ScrollAnimation>
@@ -72,10 +78,8 @@ export default async function ContactSection() {
           <div className="lg:col-span-7">
             <ScrollAnimation variant="slideInRight">
                 <div className={cn(
-                    "rounded-[3rem] p-8 md:p-12 border shadow-2xl",
-                    useVanta 
-                        ? "bg-white/5 border-white/10 backdrop-blur-xl" 
-                        : "bg-card text-card-foreground border-border"
+                    "rounded-[3rem]",
+                    useVanta && "p-1 md:p-1 border border-white/10 bg-white/5 backdrop-blur-xl"
                 )}>
                     <ContactForm />
                 </div>

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getContactDetails, ContactDetails } from '@/app/admin/settings/actions/contact-actions';
 import { useEffect, useState } from 'react';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone, MessageCircle, Download } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const WhatsAppIcon = () => (
@@ -20,6 +20,8 @@ const WhatsAppIcon = () => (
 
 function FloatingButtons() {
     const [contactDetails, setContactDetails] = useState<ContactDetails | null>(null);
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    const [showInstallBtn, setShowInstallBtn] = useState(false);
 
     useEffect(() => {
         async function fetchDetails() {
@@ -29,7 +31,39 @@ function FloatingButtons() {
             }
         }
         fetchDetails();
+
+        const handleBeforeInstallPrompt = (e: any) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            setDeferredPrompt(e);
+            // Update UI to notify the user they can add to home screen
+            setShowInstallBtn(true);
+
+            // 🕒 Auto-hide after 10 seconds if not clicked
+            setTimeout(() => {
+                setShowInstallBtn(false);
+            }, 10000);
+        };
+
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
     }, [])
+
+    const handleInstallClick = async () => {
+        if (!deferredPrompt) return;
+        // Show the prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            setShowInstallBtn(false);
+        }
+        setDeferredPrompt(null);
+    };
     
     if (!contactDetails || !contactDetails.enableFloatingButtons) {
         return null;
@@ -59,6 +93,17 @@ function FloatingButtons() {
             "fixed bottom-6 z-50 flex flex-col items-center gap-3",
             positionClasses[contactDetails.buttonPosition]
         )}>
+            {showInstallBtn && (
+                <button 
+                    onClick={handleInstallClick}
+                    className={cn(
+                        "flex h-[60px] w-[60px] items-center justify-center rounded-full bg-amber-500 text-white shadow-lg transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 animate-bounce",
+                    )}
+                    aria-label="Install App"
+                >
+                    <Download className="h-8 w-8" />
+                </button>
+            )}
              <Link 
                 href={callLink}
                 className={cn(

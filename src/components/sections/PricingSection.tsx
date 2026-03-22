@@ -137,7 +137,7 @@ export default function PricingSection() {
     const useVanta = vantaSettings?.globalEnable && sectionVantaConfig?.enabled;
     
     return (
-        <section id="pricing" className="relative overflow-hidden py-24">
+        <section id="pricing" className="relative overflow-hidden py-14">
             {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
             <div className="container relative z-10">
                 <ScrollAnimation variant="fadeInUp" className="text-center mb-20">
