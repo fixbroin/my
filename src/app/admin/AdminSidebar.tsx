@@ -44,20 +44,20 @@ export default function AdminSidebar({ className, onLinkClick }: AdminSidebarPro
     const pathname = usePathname();
 
     return (
-        <aside className={cn("bg-muted text-muted-foreground text-slate-600 dark:text-gray-400 border-r border-border flex flex-col h-screen sticky top-0 shadow-sm", className)}>
+        <aside className={cn("bg-muted text-muted-foreground text-muted-foreground border-r border-border flex flex-col h-screen sticky top-0 shadow-sm", className)}>
             <div className="p-6 mb-2">
                 <div className="flex items-center gap-3 px-2">
                     <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/25">
                         <Settings className="text-white h-5 w-5" />
                     </div>
-                    <span className="font-black text-slate-900 dark:text-white tracking-tighter text-2xl uppercase italic">ADS<span className="text-primary">Admin</span></span>
+                    <span className="font-black text-foreground tracking-tighter text-2xl uppercase italic">ADS<span className="text-primary">Admin</span></span>
                 </div>
             </div>
             
             <div className="flex-1 overflow-y-auto px-4 custom-scrollbar">
                 {adminNavLinks.map((group, idx) => (
                     <div key={idx} className="mb-8">
-                        <h3 className="px-4 text-[10px] uppercase tracking-[0.3em] font-black text-slate-400 dark:text-white/20 mb-4">
+                        <h3 className="px-4 text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground mb-4">
                             {group.group}
                         </h3>
                         <ul className="space-y-1.5">

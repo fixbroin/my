@@ -19,8 +19,8 @@ export default function MarketingSetupPage() {
     <div className="w-full space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">Marketing & Growth</h1>
-            <p className="mt-2 text-white dark:text-gray-400 font-medium">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground">Marketing & Growth</h1>
+            <p className="mt-2 text-muted-foreground font-medium">
                 Manage your tracking pixels, marketing scripts, and audience data.
             </p>
         </div>
@@ -39,8 +39,8 @@ export default function MarketingSetupPage() {
                     <Info className="h-6 w-6" />
                 </div>
                 <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">Pixel & Script Injection</h3>
-                    <p className="text-sm text-white dark:text-gray-400 mt-1 leading-relaxed font-medium">
+                    <h3 className="text-lg font-bold text-foreground">Pixel & Script Injection</h3>
+                    <p className="text-sm text-muted-foreground mt-1 leading-relaxed font-medium">
                         Configure Google Tag Manager, Meta Pixel, and custom tracking scripts. These are automatically injected into your public website.
                     </p>
                 </div>

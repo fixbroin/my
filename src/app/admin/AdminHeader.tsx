@@ -84,7 +84,7 @@ export default function AdminHeader({ user }: { user: User | null }) {
                         size="icon"
                         className="shrink-0 md:hidden hover:bg-slate-100 dark:hover:bg-white/5"
                     >
-                        <Menu className="h-5 w-5 text-slate-600 dark:text-gray-400" />
+                        <Menu className="h-5 w-5 text-muted-foreground" />
                         <span className="sr-only">Toggle navigation menu</span>
                     </Button>
                 </SheetTrigger>
@@ -98,10 +98,10 @@ export default function AdminHeader({ user }: { user: User | null }) {
 
             <div className="flex-1 flex items-center max-w-md">
                 <div className="relative w-full hidden sm:block">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-gray-500" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
                         placeholder="Search dashboard..." 
-                        className="bg-slate-50 dark:bg-white/5 border-border pl-10 focus-visible:ring-primary/20 h-9 transition-all hover:bg-slate-100 dark:hover:bg-white/[0.08] text-slate-900 dark:text-white"
+                        className="bg-muted border-border pl-10 focus-visible:ring-primary/20 h-9 transition-all hover:bg-muted/80 text-foreground"
                     />
                 </div>
             </div>
@@ -110,12 +110,12 @@ export default function AdminHeader({ user }: { user: User | null }) {
                 <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="relative bg-slate-100/50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl h-10 w-10 transition-colors border border-slate-200/50 dark:border-white/5" 
+                    className="relative bg-muted hover:bg-muted/80 rounded-xl h-10 w-10 transition-colors border border-border" 
                     onClick={handleNotificationClick}
                 >
-                    <Bell className="h-5 w-5 text-slate-600 dark:text-gray-400" />
+                    <Bell className="h-5 w-5 text-muted-foreground" />
                     {notificationCount > 0 && (
-                        <Badge className="absolute -top-1 -right-1 h-5 min-w-[20px] flex items-center justify-center p-1 text-[10px] font-bold bg-primary hover:bg-primary border-2 border-white dark:border-[#0b0d12] text-white rounded-full">
+                        <Badge className="absolute -top-1 -right-1 h-5 min-w-[20px] flex items-center justify-center p-1 text-[10px] font-bold bg-primary hover:bg-primary border-2 border-background text-white rounded-full">
                             {notificationCount}
                         </Badge>
                     )}
@@ -123,11 +123,11 @@ export default function AdminHeader({ user }: { user: User | null }) {
 
                 <ThemeSwitcher />
 
-                <div className="h-6 w-px bg-slate-200 dark:bg-white/10 mx-1" />
+                <div className="h-6 w-px bg-border mx-1" />
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="p-1 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl flex items-center gap-3 transition-all">
+                        <Button variant="ghost" className="p-1 hover:bg-muted rounded-xl flex items-center gap-3 transition-all">
                             <Avatar className="h-8 w-8 rounded-lg shadow-sm border border-border">
                                 <AvatarImage src={user?.photoURL || undefined} alt="Admin" />
                                 <AvatarFallback className="bg-primary/10 text-primary text-xs rounded-lg">
@@ -135,32 +135,32 @@ export default function AdminHeader({ user }: { user: User | null }) {
                                 </AvatarFallback>
                             </Avatar>
                             <div className="hidden lg:block text-left mr-2">
-                                <p className="text-sm font-semibold leading-none text-slate-900 dark:text-white">Admin</p>
-                                <p className="text-[10px] text-slate-500 dark:text-gray-500 mt-1 leading-none font-medium">{user?.email?.split('@')[0]}</p>
+                                <p className="text-sm font-semibold leading-none text-foreground">Admin</p>
+                                <p className="text-[10px] text-muted-foreground mt-1 leading-none font-medium">{user?.email?.split('@')[0]}</p>
                             </div>
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 mt-2 bg-card text-card-foreground border-border text-slate-600 dark:text-gray-300 shadow-xl">
+                    <DropdownMenuContent align="end" className="w-56 mt-2 bg-card text-card-foreground border-border shadow-xl">
                         <DropdownMenuLabel className="font-normal p-4">
                             <div className="flex flex-col space-y-1">
-                                <p className="text-sm font-bold leading-none text-slate-900 dark:text-white">Signed in as</p>
-                                <p className="text-xs leading-none text-slate-500 dark:text-muted-foreground mt-1 truncate">{user?.email}</p>
+                                <p className="text-sm font-bold leading-none text-foreground">Signed in as</p>
+                                <p className="text-xs leading-none text-muted-foreground mt-1 truncate">{user?.email}</p>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator className="bg-slate-100 dark:bg-white/5" />
-                        <DropdownMenuItem asChild className="hover:bg-slate-50 dark:hover:bg-white/5 focus:bg-slate-50 dark:focus:bg-white/5 cursor-pointer py-2.5 px-4 font-medium">
+                        <DropdownMenuSeparator className="bg-border" />
+                        <DropdownMenuItem asChild className="hover:bg-muted focus:bg-muted cursor-pointer py-2.5 px-4 font-medium">
                             <Link href="/admin/profile" className="flex items-center gap-2">
                                 <UserIcon className="h-4 w-4" />
                                 <span>Profile Settings</span>
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild className="hover:bg-slate-50 dark:hover:bg-white/5 focus:bg-slate-50 dark:focus:bg-white/5 cursor-pointer py-2.5 px-4 font-medium">
+                        <DropdownMenuItem asChild className="hover:bg-muted focus:bg-muted cursor-pointer py-2.5 px-4 font-medium">
                             <Link href="/admin/settings" className="flex items-center gap-2">
                                 <Settings className="h-4 w-4" />
                                 <span>Site Configuration</span>
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator className="bg-slate-100 dark:bg-white/5" />
+                        <DropdownMenuSeparator className="bg-border" />
                         <DropdownMenuItem onClick={handleLogout} className="text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 focus:bg-red-50 dark:focus:bg-red-500/10 cursor-pointer py-2.5 px-4 font-semibold">
                             <div className="flex items-center gap-2">
                                 <LogOut className="h-4 w-4" />

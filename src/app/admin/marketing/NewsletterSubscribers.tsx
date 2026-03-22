@@ -76,8 +76,8 @@ export default function NewsletterSubscribers() {
                         <Mail className="h-5 w-5" />
                     </div>
                     <div>
-                        <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Newsletter Subscribers</CardTitle>
-                        <CardDescription className="text-white dark:text-gray-400">Manage your mailing list and export data.</CardDescription>
+                        <CardTitle className="text-xl text-foreground font-bold">Newsletter Subscribers</CardTitle>
+                        <CardDescription className="text-muted-foreground">Manage your mailing list and export data.</CardDescription>
                     </div>
                 </div>
                 <Button 
@@ -96,9 +96,9 @@ export default function NewsletterSubscribers() {
                     <Table>
                         <TableHeader className="bg-slate-50/50 dark:bg-black/20 sticky top-0 z-10">
                             <TableRow className="border-border">
-                                <TableHead className="text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">Email Address</TableHead>
-                                <TableHead className="text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">Subscribed On</TableHead>
-                                <TableHead className="text-right text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">Actions</TableHead>
+                                <TableHead className="text-foreground font-bold uppercase tracking-widest text-[10px]">Email Address</TableHead>
+                                <TableHead className="text-foreground font-bold uppercase tracking-widest text-[10px]">Subscribed On</TableHead>
+                                <TableHead className="text-right text-foreground font-bold uppercase tracking-widest text-[10px]">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -113,8 +113,8 @@ export default function NewsletterSubscribers() {
                             ) : (
                                 subscribers.map((sub) => (
                                     <TableRow key={sub.id} className="border-border hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
-                                        <TableCell className="font-bold text-slate-900 dark:text-white">{sub.email}</TableCell>
-                                        <TableCell className="text-white dark:text-gray-400 text-sm">
+                                        <TableCell className="font-bold text-foreground">{sub.email}</TableCell>
+                                        <TableCell className="text-muted-foreground text-sm">
                                             {format(new Date(sub.subscribedAt), 'MMM dd, yyyy • hh:mm a')}
                                         </TableCell>
                                         <TableCell className="text-right">
@@ -143,7 +143,7 @@ export default function NewsletterSubscribers() {
                             <UserCheck className="h-3 w-3" />
                         </div>
                     </div>
-                    <p className="text-sm font-bold text-slate-600 dark:text-gray-400">
+                    <p className="text-sm font-bold text-muted-foreground">
                         Total Audience: <span className="text-primary">{subscribers.length} subscribers</span>
                     </p>
                 </div>

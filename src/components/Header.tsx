@@ -80,8 +80,12 @@ function HeaderContent({ settings }: { settings?: GeneralSettings | null }) {
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="lg:hidden">
-              <Button variant="ghost" size="icon" className="hover:bg-primary/10 transition-colors">
-                <Menu className="h-6 w-6" />
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="rounded-xl border-border bg-card/50 hover:bg-muted transition-all shadow-sm h-10 w-10"
+              >
+                <Menu className="h-5 w-5" />
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>

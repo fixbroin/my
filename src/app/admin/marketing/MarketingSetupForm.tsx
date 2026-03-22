@@ -128,7 +128,7 @@ export default function MarketingSetupForm() {
                     <div className="p-2 rounded-lg bg-orange-500/10 text-orange-500">
                         <Chrome className="h-5 w-5" />
                     </div>
-                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Google Ecosystem</CardTitle>
+                    <CardTitle className="text-xl text-foreground font-bold">Google Ecosystem</CardTitle>
                 </div>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
@@ -148,7 +148,7 @@ export default function MarketingSetupForm() {
                     <div className="p-2 rounded-lg bg-blue-600/10 text-blue-600">
                         <FbIcon className="h-5 w-5" />
                     </div>
-                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Facebook / Meta</CardTitle>
+                    <CardTitle className="text-xl text-foreground font-bold">Facebook / Meta</CardTitle>
                 </div>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
@@ -163,7 +163,7 @@ export default function MarketingSetupForm() {
                     <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500">
                         <Zap className="h-5 w-5" />
                     </div>
-                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Other Platforms</CardTitle>
+                    <CardTitle className="text-xl text-foreground font-bold">Other Platforms</CardTitle>
                 </div>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
@@ -180,7 +180,7 @@ export default function MarketingSetupForm() {
                     <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
                         <Code className="h-5 w-5" />
                     </div>
-                    <CardTitle className="text-xl text-slate-900 dark:text-white font-bold">Developer Scripts</CardTitle>
+                    <CardTitle className="text-xl text-foreground font-bold">Developer Scripts</CardTitle>
                 </div>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
