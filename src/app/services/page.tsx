@@ -36,7 +36,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* Services List */}
-      <section className="py-14 lg:py-32">
+      <section className="py-24 lg:py-32">
         <div className="container">
             <div className="space-y-32">
             {services.map((service, index) => (

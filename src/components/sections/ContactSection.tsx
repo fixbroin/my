@@ -23,7 +23,7 @@ export default async function ContactSection() {
   ].filter(item => item.value && item.value !== '');
 
   return (
-    <section id="contact" className="relative overflow-hidden py-14">
+    <section id="contact" className="relative overflow-hidden py-24">
       {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
       
       <div className="container relative z-10">

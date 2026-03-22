@@ -48,7 +48,7 @@ export default async function PortfolioPage() {
       </section>
 
       {/* Grid */}
-      <section className="py-14 lg:py-32">
+      <section className="py-24 lg:py-32">
         <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12 lg:gap-16">
             {portfolioItems.map((item, index) => (

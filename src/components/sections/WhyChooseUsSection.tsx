@@ -23,7 +23,7 @@ export default async function WhyChooseUsSection() {
     };
 
   return (
-    <section id="why-choose-us" className="relative overflow-hidden py-14">
+    <section id="why-choose-us" className="relative overflow-hidden py-24">
        {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
       
       <div className="container relative z-10">

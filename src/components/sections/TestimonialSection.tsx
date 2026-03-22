@@ -90,7 +90,7 @@ export default function TestimonialSection() {
     if (testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className={cn("relative overflow-hidden py-14", !useVanta && 'bg-slate-50 dark:bg-black/20')}>
+    <section id="testimonials" className={cn("relative overflow-hidden py-24", !useVanta && 'bg-slate-50 dark:bg-black/20')}>
        {useVanta && <VantaBackground sectionConfig={sectionVantaConfig} />}
       
       <div className="container relative z-10">
