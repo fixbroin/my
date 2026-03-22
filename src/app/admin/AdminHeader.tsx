@@ -76,7 +76,7 @@ export default function AdminHeader({ user }: { user: User | null }) {
     }
 
     return (
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-slate-200 dark:border-white/5 bg-white/80 dark:bg-background/60 backdrop-blur-xl px-4 lg:px-8 shadow-sm dark:shadow-none">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border bg-white/80 dark:bg-background/60 backdrop-blur-xl px-4 lg:px-8 shadow-sm dark:shadow-none">
             <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                 <SheetTrigger asChild>
                     <Button
@@ -88,7 +88,7 @@ export default function AdminHeader({ user }: { user: User | null }) {
                         <span className="sr-only">Toggle navigation menu</span>
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="flex flex-col p-0 bg-white dark:bg-[#0f1117] border-slate-200 dark:border-white/5">
+                <SheetContent side="left" className="flex flex-col p-0 bg-card text-card-foreground border-border">
                    <SheetHeader className="sr-only">
                         <SheetTitle>Admin Menu</SheetTitle>
                    </SheetHeader>
@@ -98,10 +98,10 @@ export default function AdminHeader({ user }: { user: User | null }) {
 
             <div className="flex-1 flex items-center max-w-md">
                 <div className="relative w-full hidden sm:block">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white dark:text-gray-500" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-gray-500" />
                     <Input 
                         placeholder="Search dashboard..." 
-                        className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 pl-10 focus-visible:ring-primary/20 h-9 transition-all hover:bg-slate-100 dark:hover:bg-white/[0.08] text-slate-900 dark:text-white"
+                        className="bg-slate-50 dark:bg-white/5 border-border pl-10 focus-visible:ring-primary/20 h-9 transition-all hover:bg-slate-100 dark:hover:bg-white/[0.08] text-slate-900 dark:text-white"
                     />
                 </div>
             </div>
@@ -110,12 +110,12 @@ export default function AdminHeader({ user }: { user: User | null }) {
                 <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="relative hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl h-10 w-10" 
+                    className="relative bg-slate-100/50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl h-10 w-10 transition-colors border border-slate-200/50 dark:border-white/5" 
                     onClick={handleNotificationClick}
                 >
-                    <Bell className="h-5 w-5 text-white dark:text-gray-400" />
+                    <Bell className="h-5 w-5 text-slate-600 dark:text-gray-400" />
                     {notificationCount > 0 && (
-                        <Badge className="absolute top-1.5 right-1.5 h-4 min-w-[16px] flex items-center justify-center p-0.5 text-[10px] bg-primary hover:bg-primary border-white dark:border-background">
+                        <Badge className="absolute -top-1 -right-1 h-5 min-w-[20px] flex items-center justify-center p-1 text-[10px] font-bold bg-primary hover:bg-primary border-2 border-white dark:border-[#0b0d12] text-white rounded-full">
                             {notificationCount}
                         </Badge>
                     )}
@@ -128,7 +128,7 @@ export default function AdminHeader({ user }: { user: User | null }) {
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="p-1 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl flex items-center gap-3 transition-all">
-                            <Avatar className="h-8 w-8 rounded-lg shadow-sm border border-slate-100 dark:border-white/10">
+                            <Avatar className="h-8 w-8 rounded-lg shadow-sm border border-border">
                                 <AvatarImage src={user?.photoURL || undefined} alt="Admin" />
                                 <AvatarFallback className="bg-primary/10 text-primary text-xs rounded-lg">
                                     {user?.email?.charAt(0).toUpperCase() || <CircleUser className="h-5 w-5" />}
@@ -136,15 +136,15 @@ export default function AdminHeader({ user }: { user: User | null }) {
                             </Avatar>
                             <div className="hidden lg:block text-left mr-2">
                                 <p className="text-sm font-semibold leading-none text-slate-900 dark:text-white">Admin</p>
-                                <p className="text-[10px] text-white dark:text-gray-500 mt-1 leading-none font-medium">{user?.email?.split('@')[0]}</p>
+                                <p className="text-[10px] text-slate-500 dark:text-gray-500 mt-1 leading-none font-medium">{user?.email?.split('@')[0]}</p>
                             </div>
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-56 mt-2 bg-white dark:bg-[#161922] border-slate-200 dark:border-white/10 text-slate-600 dark:text-gray-300 shadow-xl">
+                    <DropdownMenuContent align="end" className="w-56 mt-2 bg-card text-card-foreground border-border text-slate-600 dark:text-gray-300 shadow-xl">
                         <DropdownMenuLabel className="font-normal p-4">
                             <div className="flex flex-col space-y-1">
                                 <p className="text-sm font-bold leading-none text-slate-900 dark:text-white">Signed in as</p>
-                                <p className="text-xs leading-none text-white dark:text-muted-foreground mt-1 truncate">{user?.email}</p>
+                                <p className="text-xs leading-none text-slate-500 dark:text-muted-foreground mt-1 truncate">{user?.email}</p>
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator className="bg-slate-100 dark:bg-white/5" />

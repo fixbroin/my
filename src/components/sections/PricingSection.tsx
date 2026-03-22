@@ -40,7 +40,7 @@ const PricingCard = ({ plan, onBookNowClick }: { plan: PricingPlan; onBookNowCli
                     "h-full flex flex-col rounded-[2.5rem] p-8 lg:p-10 transition-all duration-300 border shadow-sm",
                     plan.is_featured 
                         ? "bg-[#0f1117] border-primary/50 dark:border-primary shadow-2xl shadow-primary/10 text-white" 
-                        : "bg-white dark:bg-[#0f1117] border-slate-200 dark:border-white/5 text-slate-900 dark:text-white"
+                        : "bg-card text-card-foreground border-border text-slate-900 dark:text-white"
                 )}>
                     <div className="mb-8">
                         <h3 className={cn(

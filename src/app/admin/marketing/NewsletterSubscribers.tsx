@@ -69,8 +69,8 @@ export default function NewsletterSubscribers() {
     };
 
     return (
-        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm dark:shadow-2xl overflow-hidden">
-            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5 flex flex-row items-center justify-between space-y-0">
+        <Card className="bg-card text-card-foreground border-border shadow-sm dark:shadow-2xl overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border flex flex-row items-center justify-between space-y-0">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-primary/10 text-primary">
                         <Mail className="h-5 w-5" />
@@ -85,7 +85,7 @@ export default function NewsletterSubscribers() {
                     size="sm" 
                     onClick={exportCSV} 
                     disabled={subscribers.length === 0}
-                    className="rounded-xl border-slate-200 dark:border-white/10 font-bold gap-2"
+                    className="rounded-xl border-border font-bold gap-2"
                 >
                     <Download className="h-4 w-4" />
                     Export CSV
@@ -95,7 +95,7 @@ export default function NewsletterSubscribers() {
                 <div className="max-h-[500px] overflow-y-auto custom-scrollbar">
                     <Table>
                         <TableHeader className="bg-slate-50/50 dark:bg-black/20 sticky top-0 z-10">
-                            <TableRow className="border-slate-100 dark:border-white/5">
+                            <TableRow className="border-border">
                                 <TableHead className="text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">Email Address</TableHead>
                                 <TableHead className="text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">Subscribed On</TableHead>
                                 <TableHead className="text-right text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[10px]">Actions</TableHead>
@@ -112,7 +112,7 @@ export default function NewsletterSubscribers() {
                                 </TableRow>
                             ) : (
                                 subscribers.map((sub) => (
-                                    <TableRow key={sub.id} className="border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
+                                    <TableRow key={sub.id} className="border-border hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors">
                                         <TableCell className="font-bold text-slate-900 dark:text-white">{sub.email}</TableCell>
                                         <TableCell className="text-white dark:text-gray-400 text-sm">
                                             {format(new Date(sub.subscribedAt), 'MMM dd, yyyy • hh:mm a')}
@@ -134,7 +134,7 @@ export default function NewsletterSubscribers() {
                     </Table>
                 </div>
                 
-                <div className="p-6 bg-slate-50/30 dark:bg-black/10 border-t border-slate-100 dark:border-white/5 flex items-center gap-4">
+                <div className="p-6 bg-slate-50/30 dark:bg-black/10 border-t border-border flex items-center gap-4">
                     <div className="flex -space-x-2">
                         {[1,2,3].map(i => (
                             <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#161922] bg-slate-200 dark:bg-white/5" />

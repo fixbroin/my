@@ -78,7 +78,7 @@ export default async function ContactPage() {
                     <div className="space-y-6">
                         {contactDetails.map((detail, idx) => (
                             <ScrollAnimation key={detail.title} variant="fadeInUp" delay={idx * 0.1}>
-                                <a href={detail.href} className="flex items-center gap-6 p-6 rounded-[2rem] bg-white dark:bg-[#0f1117] border border-slate-200 dark:border-white/5 transition-all duration-300 hover:shadow-xl hover:border-primary/30 group">
+                                <a href={detail.href} className="flex items-center gap-6 p-6 rounded-[2rem] bg-card text-card-foreground border border-border transition-all duration-300 hover:shadow-xl hover:border-primary/30 group">
                                     <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg transition-transform duration-300 group-hover:scale-110", detail.color)}>
                                         <detail.icon className="h-6 w-6" />
                                     </div>
@@ -104,7 +104,7 @@ export default async function ContactPage() {
 
                 <div className="lg:col-span-7">
                     <ScrollAnimation variant="slideInRight">
-                        <div className="bg-white dark:bg-[#0f1117] rounded-[3rem] p-8 md:p-16 border border-slate-200 dark:border-white/5 shadow-2xl relative">
+                        <div className="bg-card text-card-foreground rounded-[3rem] p-8 md:p-16 border border-border shadow-2xl relative">
                             {/* Decorative background for form */}
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
                             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />

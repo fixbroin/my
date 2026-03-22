@@ -101,8 +101,8 @@ export default function GeneralSettings() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Left Column: Branding */}
                 <div className="lg:col-span-2 space-y-8">
-                    <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm dark:shadow-2xl overflow-hidden">
-                        <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                    <Card className="bg-card text-card-foreground border-border shadow-sm dark:shadow-2xl overflow-hidden">
+                        <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 rounded-lg bg-primary/10 text-primary">
                                     <Globe className="h-5 w-5" />
@@ -121,7 +121,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-slate-700 dark:text-gray-300 font-semibold">Website Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="CineElite ADS" {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-11 focus-visible:ring-primary/20 transition-all" />
+                                        <Input placeholder="CineElite ADS" {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-11 focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -166,7 +166,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-slate-700 dark:text-gray-300 font-semibold">Footer Tagline</FormLabel>
                                     <FormControl>
-                                        <Textarea placeholder="Crafting modern digital experiences..." {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white min-h-[100px] focus-visible:ring-primary/20 transition-all" />
+                                        <Textarea placeholder="Crafting modern digital experiences..." {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white min-h-[100px] focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -175,8 +175,8 @@ export default function GeneralSettings() {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm dark:shadow-2xl overflow-hidden">
-                        <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                    <Card className="bg-card text-card-foreground border-border shadow-sm dark:shadow-2xl overflow-hidden">
+                        <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 rounded-lg bg-orange-500/10 text-orange-500">
                                     <Sparkles className="h-5 w-5" />
@@ -196,11 +196,11 @@ export default function GeneralSettings() {
                                     <FormLabel className="text-slate-700 dark:text-gray-300 font-semibold">Page Transition Style</FormLabel>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <FormControl>
-                                        <SelectTrigger className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-11 focus:ring-primary/20 transition-all">
+                                        <SelectTrigger className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-11 focus:ring-primary/20 transition-all">
                                             <SelectValue placeholder="Select style" />
                                         </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent className="bg-white dark:bg-[#1c1f2a] border-slate-200 dark:border-white/10 text-slate-700 dark:text-gray-300 shadow-xl font-medium">
+                                        <SelectContent className="bg-popover border-border text-popover-foreground shadow-xl font-medium">
                                         {loaderTypes.map((type) => (
                                             <SelectItem key={type} value={type} className="focus:bg-primary/5 dark:focus:bg-primary/10 focus:text-primary dark:focus:text-white">
                                             {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -218,8 +218,8 @@ export default function GeneralSettings() {
 
                 {/* Right Column: Socials & Save */}
                 <div className="space-y-8">
-                    <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm dark:shadow-2xl overflow-hidden">
-                        <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+                    <Card className="bg-card text-card-foreground border-border shadow-sm dark:shadow-2xl overflow-hidden">
+                        <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
                                     <Share2 className="h-5 w-5" />
@@ -238,7 +238,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-[10px] text-white dark:text-gray-500 flex items-center gap-2 font-bold uppercase tracking-wider"><Facebook size={12} className="text-[#1877F2]"/> Facebook</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
+                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -251,7 +251,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-[10px] text-white dark:text-gray-500 flex items-center gap-2 font-bold uppercase tracking-wider"><Instagram size={12} className="text-[#E4405F]"/> Instagram</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
+                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -264,7 +264,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-[10px] text-white dark:text-gray-500 flex items-center gap-2 font-bold uppercase tracking-wider"><Twitter size={12} className="text-[#1DA1F2]"/> Twitter (X)</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
+                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -277,7 +277,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-[10px] text-white dark:text-gray-500 flex items-center gap-2 font-bold uppercase tracking-wider"><Linkedin size={12} className="text-[#0A66C2]"/> LinkedIn</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
+                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>
@@ -290,7 +290,7 @@ export default function GeneralSettings() {
                                     <FormItem>
                                     <FormLabel className="text-[10px] text-white dark:text-gray-500 flex items-center gap-2 font-bold uppercase tracking-wider"><Youtube size={12} className="text-[#FF0000]"/> YouTube</FormLabel>
                                     <FormControl>
-                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
+                                        <Input {...field} className="bg-slate-50 dark:bg-white/5 border-border text-slate-900 dark:text-white h-10 text-sm focus-visible:ring-primary/20 transition-all" />
                                     </FormControl>
                                     <FormMessage />
                                     </FormItem>

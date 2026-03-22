@@ -22,31 +22,15 @@ export default async function PortfolioSection() {
     const portfolioItems = allItems.slice(0, 4);
 
     const PortfolioCard = ({ item }: { item: typeof portfolioItems[0] }) => (
-      <div className="group relative flex flex-col h-full bg-white dark:bg-[#0f1117] rounded-[2rem] overflow-hidden border border-slate-200 dark:border-white/5 transition-all duration-500 hover:shadow-2xl">
+      <div className="group relative flex flex-col h-full bg-card text-card-foreground rounded-[2rem] overflow-hidden border border-border transition-all duration-500 hover:shadow-2xl">
         <div className="relative h-[300px] w-full overflow-hidden">
           <PortfolioMedia item={item} />
-          
-          <div className="absolute top-6 left-6">
-            <span className="bg-white/90 dark:bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-900 dark:text-white border border-white/20">
-                {item.category}
-            </span>
-          </div>
         </div>
         
-        <div className="p-8 flex flex-col flex-grow">
-          <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
+        <div className="p-8 flex flex-col flex-grow text-center">
+          <h3 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
             {item.title}
           </h3>
-          <div className="mt-auto pt-4 flex items-center justify-between">
-             <div className="flex -space-x-2">
-                {[1,2,3].map(i => (
-                    <div key={i} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#0f1117] bg-slate-100 dark:bg-white/5" />
-                ))}
-                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-[#0f1117] bg-primary text-white flex items-center justify-center text-[10px] font-bold">
-                    <Plus className="h-3 w-3" />
-                </div>
-             </div>
-          </div>
         </div>
       </div>
     );

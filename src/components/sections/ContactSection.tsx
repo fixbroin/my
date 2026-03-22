@@ -54,7 +54,7 @@ export default async function ContactSection() {
                             "flex items-center gap-6 p-6 rounded-[2rem] border transition-all duration-300",
                             useVanta 
                                 ? "bg-white/5 border-white/10 text-white" 
-                                : "bg-white dark:bg-[#0f1117] border-slate-200 dark:border-white/5 hover:border-primary/30"
+                                : "bg-card text-card-foreground border-border hover:border-primary/30"
                         )}>
                             <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-black/5", item.color)}>
                                 <item.icon className="h-5 w-5" />
@@ -75,7 +75,7 @@ export default async function ContactSection() {
                     "rounded-[3rem] p-8 md:p-12 border shadow-2xl",
                     useVanta 
                         ? "bg-white/5 border-white/10 backdrop-blur-xl" 
-                        : "bg-white dark:bg-[#0f1117] border-slate-200 dark:border-white/5"
+                        : "bg-card text-card-foreground border-border"
                 )}>
                     <ContactForm />
                 </div>

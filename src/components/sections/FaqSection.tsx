@@ -56,7 +56,7 @@ export default async function FaqSection() {
                         "rounded-[2rem] px-6 lg:px-8 border transition-all duration-300",
                         useVanta 
                             ? "bg-white/5 border-white/10 text-white" 
-                            : "bg-white dark:bg-[#0f1117] border-slate-200 dark:border-white/5 hover:border-primary/30"
+                            : "bg-card text-card-foreground border-border hover:border-primary/30"
                     )}
                 >
                   <AccordionTrigger className="text-left py-6 hover:no-underline hover:text-primary font-bold text-lg md:text-xl transition-colors">

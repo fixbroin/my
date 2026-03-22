@@ -34,7 +34,7 @@ export default function MarketingSetupPage() {
         
         {/* Main Configuration Form */}
         <div className="xl:col-span-7 space-y-8">
-            <div className="bg-white dark:bg-[#161922] border border-slate-200 dark:border-white/5 rounded-[2rem] p-6 flex items-start gap-4 shadow-sm">
+            <div className="bg-card text-card-foreground border border-border rounded-[2rem] p-6 flex items-start gap-4 shadow-sm">
                 <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-500">
                     <Info className="h-6 w-6" />
                 </div>

@@ -38,15 +38,17 @@ const VantaBackground = ({ sectionConfig, className }: VantaBackgroundProps) => 
         }
         
         const isDark = resolvedTheme === 'dark';
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
         effect = window.VANTA[effectName]({
             el: vantaRef.current,
-            mouseControls: true,
-            touchControls: true,
+            mouseControls: !isMobile,
+            touchControls: isMobile,
             gyroControls: false,
             minHeight: 200.00,
             minWidth: 200.00,
             scale: 1.00,
-            scaleMobile: 1.00,
+            scaleMobile: 3.00, // 🚀 High scale on mobile = fewer pixels to calculate = smoother scroll
             color: isDark ? sectionConfig.color1 : sectionConfig.color2,
             backgroundColor: isDark ? sectionConfig.color2 : sectionConfig.color1,
             ...(sectionConfig.effect === 'BIRDS' && { birdSize: 1.5, speedLimit: 4, separation: 30, quantity: 3.0 }),

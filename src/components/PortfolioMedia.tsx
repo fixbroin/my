@@ -13,9 +13,10 @@ interface PortfolioMediaProps {
 
 function getYouTubeVideoId(url: string): string | null {
   if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  // Support for: watch?v=, v/, u/w/1/..., embed/, youtu.be/, shorts/
+  const regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
   const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
+  return (match && match[1].length === 11) ? match[1] : null;
 }
 
 export default function PortfolioMedia({ item }: PortfolioMediaProps) {
@@ -75,7 +76,7 @@ export default function PortfolioMedia({ item }: PortfolioMediaProps) {
        {item.mediaType === 'video' ? (
         youTubeVideoId ? (
           <iframe
-            src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}&controls=1`}
+            src={`https://www.youtube.com/embed/${youTubeVideoId}?autoplay=1&mute=1&loop=1&playlist=${youTubeVideoId}&controls=1&playsinline=1&rel=0`}
             title={item.title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

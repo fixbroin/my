@@ -34,7 +34,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
-    <div className="relative group h-full bg-white dark:bg-[#0f1117] border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-8 lg:p-10 flex flex-col transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20">
+    <div className="relative group h-full bg-card text-card-foreground border border-border rounded-[2.5rem] p-8 lg:p-10 flex flex-col transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-primary/20">
         <div className="absolute top-8 right-8 opacity-10 group-hover:opacity-20 transition-opacity">
             <Quote className="h-12 w-12 text-primary" />
         </div>
@@ -47,7 +47,7 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => (
             &ldquo;{testimonial.description}&rdquo;
         </p>
 
-        <div className="flex items-center gap-4 pt-6 border-t border-slate-100 dark:border-white/5">
+        <div className="flex items-center gap-4 pt-6 border-t border-border">
             <Avatar className="h-12 w-12 border-2 border-primary/20">
                 <AvatarImage src={testimonial.image} alt={testimonial.name} />
                 <AvatarFallback className="bg-primary/10 text-primary font-bold">{testimonial.name.charAt(0)}</AvatarFallback>

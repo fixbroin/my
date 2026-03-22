@@ -21,11 +21,11 @@ const adminNavLinks = [
     { group: "Communication", links: [
         { href: "/admin/notifications", label: "Announcements", icon: Bell },
         { href: "/admin/submissions", label: "Inbox", icon: Mail },
+        { href: "/admin/marketing", label: "Subscribers", icon: Users },
         { href: "/admin/testimonials", label: "Reviews", icon: MessageSquare },
     ]},
     { group: "Business", links: [
         { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
-        { href: "/admin/marketing", label: "Marketing", icon: Megaphone },
         { href: "/admin/seo-geo-settings", label: "SEO & Geo", icon: Globe },
     ]},
     { group: "System", links: [
@@ -44,23 +44,23 @@ export default function AdminSidebar({ className, onLinkClick }: AdminSidebarPro
     const pathname = usePathname();
 
     return (
-        <aside className={cn("bg-white dark:bg-[#0f1117] text-slate-600 dark:text-gray-400 border-r border-slate-200 dark:border-white/5 flex flex-col h-screen sticky top-0 shadow-sm", className)}>
+        <aside className={cn("bg-muted text-muted-foreground text-slate-600 dark:text-gray-400 border-r border-border flex flex-col h-screen sticky top-0 shadow-sm", className)}>
             <div className="p-6 mb-2">
                 <div className="flex items-center gap-3 px-2">
-                    <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/20">
+                    <div className="h-9 w-9 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/25">
                         <Settings className="text-white h-5 w-5" />
                     </div>
-                    <span className="font-bold text-slate-900 dark:text-white tracking-tight text-xl">Admin<span className="text-primary">Panel</span></span>
+                    <span className="font-black text-slate-900 dark:text-white tracking-tighter text-2xl uppercase italic">ADS<span className="text-primary">Admin</span></span>
                 </div>
             </div>
             
             <div className="flex-1 overflow-y-auto px-4 custom-scrollbar">
                 {adminNavLinks.map((group, idx) => (
                     <div key={idx} className="mb-8">
-                        <h3 className="px-4 text-[10px] uppercase tracking-[0.2em] font-bold text-white dark:text-gray-500 mb-4">
+                        <h3 className="px-4 text-[10px] uppercase tracking-[0.3em] font-black text-slate-400 dark:text-white/20 mb-4">
                             {group.group}
                         </h3>
-                        <ul className="space-y-1">
+                        <ul className="space-y-1.5">
                             {group.links.map((link) => {
                                 const isActive = pathname.startsWith(link.href);
                                 return (
@@ -69,26 +69,19 @@ export default function AdminSidebar({ className, onLinkClick }: AdminSidebarPro
                                             href={link.href}
                                             onClick={onLinkClick}
                                             className={cn(
-                                                "group flex items-center justify-between rounded-xl px-4 py-2.5 transition-all duration-200 relative overflow-hidden",
+                                                "group flex items-center justify-between rounded-xl px-4 py-3 transition-all duration-300 relative overflow-hidden",
                                                 isActive 
-                                                    ? "bg-primary/5 dark:bg-primary/10 text-primary dark:text-white font-semibold" 
-                                                    : "hover:bg-slate-50 dark:hover:bg-white/[0.03] hover:text-slate-900 dark:hover:text-white text-slate-600 dark:text-gray-400"
-                                            )}
+                                                    ? "bg-primary/10 text-primary font-bold shadow-sm border border-primary/20"
+                                                    : "hover:bg-muted hover:text-foreground text-muted-foreground hover:shadow-sm border border-transparent hover:border-border"                                            )}
                                         >
-                                            {isActive && (
-                                                <motion.div 
-                                                    layoutId="active-pill"
-                                                    className="absolute left-0 w-1 h-6 bg-primary rounded-r-full"
-                                                />
-                                            )}
                                             <div className="flex items-center gap-3">
                                                 <link.icon className={cn(
-                                                    "h-5 w-5 transition-colors duration-200",
-                                                    isActive ? "text-primary" : "text-white dark:text-gray-500 group-hover:text-slate-600 dark:group-hover:text-gray-300"
+                                                    "h-5 w-5 transition-colors duration-300",
+                                                    isActive ? "text-primary" : "text-slate-400 dark:text-slate-600 group-hover:text-primary"
                                                 )} />
-                                                <span className="text-sm">{link.label}</span>
+                                                <span className="text-sm tracking-tight">{link.label}</span>
                                             </div>
-                                            {isActive && <ChevronRight className="h-4 w-4 text-primary/50" />}
+                                            {isActive && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
                                         </Link>
                                     </li>
                                 );
@@ -98,11 +91,11 @@ export default function AdminSidebar({ className, onLinkClick }: AdminSidebarPro
                 ))}
             </div>
 
-            <div className="p-4 mt-auto border-t border-slate-100 dark:border-white/5">
+            <div className="p-4 mt-auto border-t border-border">
                 <Link 
                     href="/" 
                     target="_blank"
-                    className="flex items-center justify-between w-full p-3 rounded-xl bg-slate-50 dark:bg-white/[0.03] hover:bg-slate-100 dark:hover:bg-white/[0.05] transition-colors text-xs text-white dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
+                    className="flex items-center justify-between w-full p-3 rounded-xl bg-card hover:bg-muted transition-colors text-xs text-muted-foreground hover:text-foreground shadow-sm border border-border hover:border-border"
                 >
                     <div className="flex items-center gap-2">
                         <ExternalLink className="h-4 w-4" />

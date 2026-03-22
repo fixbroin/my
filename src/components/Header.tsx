@@ -68,7 +68,7 @@ function HeaderContent({ settings }: { settings?: GeneralSettings | null }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <ThemeSwitcher />
           
           <Button asChild className="hidden md:flex h-11 px-6 rounded-full font-black text-xs uppercase tracking-widest group shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
@@ -85,33 +85,46 @@ function HeaderContent({ settings }: { settings?: GeneralSettings | null }) {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:w-[400px] p-0 bg-white dark:bg-[#0b0d12] border-slate-200 dark:border-white/5">
-              <SheetHeader className="p-8 border-b border-slate-100 dark:border-white/5">
-                <div className="flex items-center justify-between">
-                    <Logo appName={settings?.website_name} logoUrl={settings?.logo} />
-                    <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                </div>
+            <SheetContent side="right" className="w-full p-0 bg-background border-none shadow-2xl">
+              <SheetHeader className="p-6 flex flex-row items-center justify-between border-b border-border">
+                <Logo appName={settings?.website_name} logoUrl={settings?.logo} />
+                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               </SheetHeader>
-              <div className="p-8">
-                <nav className="flex items-center space-y-8">
-                  {navLinks.map((link) => (
+              
+              <div className="flex flex-col h-[calc(100vh-80px)] overflow-y-auto">
+                <nav className="flex flex-col space-y-2 p-6">
+                  {navLinks.map((link, index) => (
                     <LoadingLink
                         key={link.href}
                         href={link.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                            "text-3xl font-black uppercase tracking-tighter transition-all hover:text-primary",
-                            pathname === link.href ? "text-primary" : "text-slate-900 dark:text-white"
+                            "group flex items-center justify-between p-4 rounded-2xl transition-all duration-300 active:bg-primary/5",
+                            pathname === link.href ? "bg-primary/10 text-primary" : "text-slate-900 dark:text-white"
                         )}
+                        style={{ animationDelay: `${index * 50}ms` }}
                     >
-                        {link.label}
+                        <span className="text-2xl font-black uppercase tracking-tight">{link.label}</span>
+                        <ArrowRight className={cn(
+                            "h-6 w-6 transition-all duration-300",
+                            pathname === link.href ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0"
+                        )} />
                     </LoadingLink>
                   ))}
                 </nav>
-                <div className="mt-12 pt-12 border-t border-slate-100 dark:border-white/5">
-                    <Button asChild size="lg" className="w-full h-16 rounded-2xl font-black text-lg shadow-xl shadow-primary/20" onClick={() => setIsOpen(false)}>
-                        <LoadingLink href="/contact">Get A Quote</LoadingLink>
-                    </Button>
+                
+                <div className="mt-auto p-8 space-y-6">
+                    <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 dark:via-white/10 to-transparent" />
+                    
+                    <div className="space-y-4">
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-white/40 px-2 text-center">Ready to grow your brand?</p>
+                        <Button asChild size="lg" className="w-full h-16 rounded-2xl font-black text-lg shadow-2xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => setIsOpen(false)}>
+                            <LoadingLink href="/contact">
+                                Start Your Project
+                                <ArrowRight className="ml-2 h-5 w-5" />
+                            </LoadingLink>
+                        </Button>
+                    </div>
                 </div>
               </div>
             </SheetContent>

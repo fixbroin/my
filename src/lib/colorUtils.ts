@@ -2,66 +2,66 @@ import type { ThemePalette } from "@/types/firestore";
 
 /* ✅ DEFAULT LIGHT THEME */
 export const DEFAULT_LIGHT_THEME_COLORS_HSL: ThemePalette = {
-  background: '210 40% 98%',
-  foreground: '222 47% 11%',
+  background: '40 20% 98%',
+  foreground: '20 20% 8%',
 
   card: '0 0% 100%',
-  'card-foreground': '222 47% 11%',
+  'card-foreground': '20 20% 8%',
 
   popover: '0 0% 100%',
-  'popover-foreground': '222 47% 11%',
+  'popover-foreground': '20 20% 8%',
 
-  primary: '258 90% 60%',
-  'primary-foreground': '210 40% 98%',
+  primary: '38 92% 50%',
+  'primary-foreground': '0 0% 100%',
 
-  secondary: '220 20% 96%',
-  'secondary-foreground': '222 47% 11%',
+  secondary: '40 15% 92%',
+  'secondary-foreground': '20 20% 8%',
 
-  muted: '220 20% 96%',
-  'muted-foreground': '215 16% 47%',
+  muted: '40 15% 92%',
+  'muted-foreground': '20 10% 45%',
 
-  accent: '280 85% 65%',
-  'accent-foreground': '210 40% 98%',
+  accent: '38 92% 50%',
+  'accent-foreground': '0 0% 100%',
 
-  destructive: '0 72% 55%',
-  'destructive-foreground': '210 40% 98%',
+  destructive: '0 84.2% 60.2%',
+  'destructive-foreground': '0 0% 100%',
 
-  border: '220 15% 90%',
-  input: '220 15% 90%',
+  border: '40 15% 86%',
+  input: '40 15% 86%',
 
-  ring: '258 90% 60%',
+  ring: '38 92% 50%',
 };
 
 /* ✅ DEFAULT DARK THEME */
 export const DEFAULT_DARK_THEME_COLORS_HSL: ThemePalette = {
-  background: '222 47% 8%',
-  foreground: '210 40% 96%',
+  background: '220 10% 6%',
+  foreground: '40 15% 96%',
 
-  card: '222 47% 10%',
-  'card-foreground': '210 40% 96%',
+  card: '220 10% 10%',
+  'card-foreground': '40 15% 96%',
 
-  popover: '222 47% 10%',
-  'popover-foreground': '210 40% 96%',
+  popover: '220 10% 10%',
+  'popover-foreground': '40 15% 96%',
 
-  primary: '258 90% 65%',
-  'primary-foreground': '210 40% 98%',
+  primary: '45 95% 55%',
+  'primary-foreground': '220 10% 6%',
 
-  secondary: '217 32% 18%',
-  'secondary-foreground': '210 40% 96%',
+  secondary: '220 10% 16%',
+  'secondary-foreground': '40 15% 96%',
 
-  muted: '217 32% 18%',
-  'muted-foreground': '215 20% 70%',
+  muted: '220 10% 16%',
+  'muted-foreground': '220 10% 65.1%',
 
-  accent: '280 85% 65%',
-  'accent-foreground': '210 40% 98%',
+  accent: '45 95% 55%',
+  'accent-foreground': '220 10% 6%',
 
-  destructive: '0 60% 40%',
-  'destructive-foreground': '210 40% 98%',
+  destructive: '0 62.8% 40.6%',
+  'destructive-foreground': '40 15% 96%',
 
-  border: '217 25% 20%',
-  input: '217 25% 20%',
+  border: '220 10% 16%',
+  input: '220 10% 16%',
 
-  ring: '258 90% 65%',
+  ring: '45 95% 55%',
 };
 
 /* ✅ HSL → HEX */

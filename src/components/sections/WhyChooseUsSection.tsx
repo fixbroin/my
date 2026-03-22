@@ -50,7 +50,7 @@ export default async function WhyChooseUsSection() {
                     "flex flex-col gap-4 p-6 rounded-3xl transition-all duration-300 border",
                     useVanta 
                         ? "bg-white/5 border-white/10 text-white" 
-                        : "bg-white dark:bg-[#0f1117] border-slate-100 dark:border-white/5 group-hover:shadow-xl group-hover:-translate-y-1"
+                        : "bg-card text-card-foreground border-border group-hover:shadow-xl group-hover:-translate-y-1"
                   )}>
                     <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                         <DynamicIcon name={feature.icon} className="h-6 w-6" />
@@ -75,7 +75,7 @@ export default async function WhyChooseUsSection() {
             </div>
             
             {/* Floating Achievement Badge */}
-            <div className="absolute -bottom-6 -left-6 bg-white dark:bg-[#161922] p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-white/5 animate-bounce-fab">
+            <div className="absolute -bottom-6 -left-6 bg-card text-card-foreground p-6 rounded-3xl shadow-2xl border border-border animate-bounce-fab">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500">
                         <Sparkles className="h-6 w-6" />

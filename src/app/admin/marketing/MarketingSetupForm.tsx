@@ -105,7 +105,7 @@ export default function MarketingSetupForm() {
 
   if (isLoading) {
     return (
-        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5">
+        <Card className="bg-card text-card-foreground border-border">
             <CardHeader>
                 <Skeleton className="h-8 w-1/2 bg-slate-100 dark:bg-white/5" />
                 <Skeleton className="h-4 w-3/4 bg-slate-100 dark:bg-white/5" />
@@ -122,8 +122,8 @@ export default function MarketingSetupForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         
-        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
-            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+        <Card className="bg-card text-card-foreground border-border shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-orange-500/10 text-orange-500">
                         <Chrome className="h-5 w-5" />
@@ -142,8 +142,8 @@ export default function MarketingSetupForm() {
             </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
-            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+        <Card className="bg-card text-card-foreground border-border shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-blue-600/10 text-blue-600">
                         <FbIcon className="h-5 w-5" />
@@ -157,8 +157,8 @@ export default function MarketingSetupForm() {
             </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
-            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+        <Card className="bg-card text-card-foreground border-border shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-purple-500/10 text-purple-500">
                         <Zap className="h-5 w-5" />
@@ -174,8 +174,8 @@ export default function MarketingSetupForm() {
             </CardContent>
         </Card>
         
-        <Card className="bg-white dark:bg-[#161922] border-slate-200 dark:border-white/5 shadow-sm overflow-hidden">
-            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-slate-100 dark:border-white/5">
+        <Card className="bg-card text-card-foreground border-border shadow-sm overflow-hidden">
+            <CardHeader className="pb-4 bg-slate-50/50 dark:bg-white/[0.02] border-b border-border">
                 <div className="flex items-center gap-3">
                     <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500">
                         <Code className="h-5 w-5" />
@@ -215,7 +215,7 @@ function SettingInput({ control, name, label, placeholder, description }: Settin
             control={control}
             name={name}
             render={({ field }) => (
-                <div className="p-5 border border-slate-100 dark:border-white/5 rounded-3xl space-y-4 bg-slate-50/30 dark:bg-white/[0.01]">
+                <div className="p-5 border border-border rounded-3xl space-y-4 bg-slate-50/30 dark:bg-white/[0.01]">
                     <div className="flex items-center justify-between">
                         <FormLabel className="text-slate-700 dark:text-gray-300 font-bold">{label}</FormLabel>
                         <Switch
@@ -226,7 +226,7 @@ function SettingInput({ control, name, label, placeholder, description }: Settin
                     {field.value.enabled && (
                         <div className="space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
                             <FormControl>
-                                <Input placeholder={placeholder} value={field.value.value || ''} onChange={(e) => field.onChange({ ...field.value, value: e.target.value })} className="bg-white dark:bg-white/5 border-slate-200 dark:border-white/10" />
+                                <Input placeholder={placeholder} value={field.value.value || ''} onChange={(e) => field.onChange({ ...field.value, value: e.target.value })} className="bg-background border-border" />
                             </FormControl>
                             {description && <FormDescription className="text-[10px] uppercase font-bold tracking-wider text-white">{description}</FormDescription>}
                             <FormMessage />
@@ -244,7 +244,7 @@ function SettingTextarea({ control, name, label, placeholder, description }: Set
             control={control}
             name={name}
             render={({ field }) => (
-                <div className="p-5 border border-slate-100 dark:border-white/5 rounded-3xl space-y-4 bg-slate-50/30 dark:bg-white/[0.01]">
+                <div className="p-5 border border-border rounded-3xl space-y-4 bg-slate-50/30 dark:bg-white/[0.01]">
                     <div className="flex items-center justify-between">
                         <FormLabel className="text-slate-700 dark:text-gray-300 font-bold">{label}</FormLabel>
                         <Switch
@@ -257,7 +257,7 @@ function SettingTextarea({ control, name, label, placeholder, description }: Set
                             <FormControl>
                                 <Textarea
                                     placeholder={placeholder}
-                                    className="min-h-32 font-mono text-[11px] bg-white dark:bg-white/5 border-slate-200 dark:border-white/10"
+                                    className="min-h-32 font-mono text-[11px] bg-background border-border"
                                     value={field.value.value || ''}
                                     onChange={(e) => field.onChange({ ...field.value, value: e.target.value })}
                                 />
